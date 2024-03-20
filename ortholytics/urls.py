@@ -22,7 +22,4 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index,  name='index'),
-    path('dashboard', views.dashboard,  name='dashboard'),
-    path('myfiles', views.files,  name='files'),
-    path('eachfile', views.eachfile,  name='eachfile'),
 ]
