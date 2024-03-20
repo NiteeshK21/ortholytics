@@ -188,10 +188,6 @@ Use strong and impactful words, but make sure misinformation does not happen."""
 
 def eval(text):
     inst="Given the provided information, create a JSON file containing the key and classify the customer's text into a specific category based on the conversation. Do not include the actual text.\n\nPositive Feedback Categories: Classify the customer's text into one of the following categories: Satisfaction, Ease of Use, Helpfulness, Efficiency, Quality, Value, Reliability, Innovation, Personalization, Responsiveness.\n\nNegative Feedback Categories: Classify the customer's text into one of the following categories: Frustration, Dissatisfaction, Complaints, Confusion, Inefficiency, Poor Quality, Technical Issues, Accessibility Problems, Usability Concerns, Lack of Features, Performance Issues, Billing Problems.\n\nNegative Feedback - Constructive Categories: Classify the customer's text into one of the following specific categories: Suggestions, Improvements, Enhancements, Feature Requests, Usability Recommendations, Workflow Suggestions, Training Needs, Documentation Issues, Policy Changes.\n\nCompetitor Performance Categories: Classify the customer's text into one of the following categories: Speed, Features, Usability, Customer Support, Price, Reliability, Innovation, Market Presence, Brand Reputation, Customization Options, Integration Capabilities.\n\nList of Products: Classify the customer's text into one of the following categories: Platform, Software, Application, Service, Tool, Solution, Device, System, Appliance, Equipment, Program, Feature.\n\nList of Conversation Topics between Customer and Agent: Classify the customer's text into one of the following categories: Account Management, Billing and Payments, Technical Support, Product Information, Feature Requests, Complaints Handling, Feedback Collection, Training and Education, Order Management, Returns and Refunds, Troubleshooting, Subscription Management.\n\nDifferent Possible Issues Classes: Classify the customer's text into one of the following categories: Technical Issues, Account Problems, Billing Errors, Service Interruptions, Performance Degradation, Accessibility Challenges, Usability Concerns, Product Defects, Policy Violations, Security Concerns, Communication Problems, Integration Issues."
-    # prompt=f"""
-    #         "text": {text},
-    #         "instructions": f"{inst}
-    #     """
     prompt=text+inst
     headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTY2ZDAyMTQtODlmNi00Y2UyLWI0MTYtNGEyZjMxNmNkMGZkIiwidHlwZSI6ImFwaV90b2tlbiJ9.SRJr5Er6nU8J2BKNZAgtWAHCS2n8x-O7wVAp_bN4_Tk"}
     url = "https://api.edenai.run/v2/text/chat"
@@ -208,7 +204,13 @@ def eval(text):
     response = requests.post(url, json=payload, headers=headers)
 
     result = json.loads(response.text)
-    return result['openai']['generated_text']
+    # print(result['openai']['generated_text'])
+    data=result['openai']['generated_text']
+    data=data.strip("`")
+    print(data)
+    dataa=json.loads(data)
+    # dataa=dict(data)
+    return dataa
 
 def calculate_feedback_ratio(json_data):
     # Extract positive feedback categories and negative feedback categories
@@ -216,9 +218,9 @@ def calculate_feedback_ratio(json_data):
     negative_feedback_constructive_categories = json_data.get('categories', {}).get('negative_feedback_constructive', [])
     negative_feedback_categories = json_data.get('categories', {}).get('negative_feedback', [])
 
-    ratio=(len(positive_feedback_categories)+ len(negative_feedback_constructive_categories))/((len(positive_feedback_categories)+len(negative_feedback_categories)+len(negative_feedback_constructive_categories)))
+    ratio = (len(positive_feedback_categories) + len(negative_feedback_constructive_categories)) / ((1+len(positive_feedback_categories) + len(negative_feedback_categories) + len(negative_feedback_constructive_categories)))
 
-    return ratio*100
+    return ratio * 100
 
 def type(conversation):
     inst="Classify the user's proficiency level based on the conversation. The possible levels are: 'Power User,' 'Weak User,' and 'Intermediate User.' Return a single string from this list that best represents the user's proficiency level in the given conversation. Don't write extra text just return key word from list no other character or word to be returned ."
@@ -241,13 +243,13 @@ def type(conversation):
     return result['openai']['generated_text']
 
 def index(request):
-    name="Conversation1"
+    name="Conversation2"
     summary = chat(conversation)    
     parameters = eval(conversation)
-    parameters=parameters.strip()
-    parameters=parameters[4:]
-    print(parameters)
-    parameters=json.loads(parameters)
+    # parameters=parameters.strip()
+    # parameters=parameters[4:]
+    # print(parameters)
+    # parameters=json.loads(parameters)
     # parameters=parameters["CustomerFeedback"]
     score = calculate_feedback_ratio(parameters)
     user_type=type(conversation)
@@ -311,19 +313,17 @@ def index(request):
 
 
 # modified=0
-conversation="""Speaker A: Thank you for reaching out to our customer support regarding your rental vehicle. My name is Wendy. How can I assist you today?
-Speaker B: Hi Wendy, I'm having a frustrating experience with your rental website. I've encountered a product defect that's preventing me from booking a car.
-Speaker A: I apologize for the inconvenience. Can you please provide more details about the issue you're facing with the product?
-Speaker B: Sure, whenever I try to book a car, the website keeps freezing and doesn't show any available options. It's making it impossible for me to proceed with my reservation.
-Speaker A: I'm sorry to hear that. Let me investigate the issue with our technical team to address this product defect. In the meantime, is there anything else I can assist you with?
-Speaker B: Yes, I also noticed some accessibility challenges on your website. The layout is not user-friendly, especially for individuals with visual impairments.
-Speaker A: Thank you for bringing this to our attention. We'll work on improving the accessibility features of our website to ensure a better user experience for all customers.
-Speaker B: Another concern I have is regarding the performance of your competitors' customer support. I've heard they offer quicker responses and better assistance.
-Speaker A: We appreciate your feedback regarding our competitor's performance. Rest assured, we're committed to enhancing our customer support to meet your expectations.
-Speaker B: Thank you. Additionally, I have some feature requests and usability recommendations to improve the booking process on your website.
-Speaker A: Please feel free to share your suggestions for feature enhancements and usability improvements. We value your input in making our services more user-friendly.
-Speaker B: Lastly, I've received some negative feedback from friends who have used your service in the past. They expressed dissatisfaction with the reliability of your vehicles and complaints about confusion during the booking process.
-Speaker A: I'm sorry to hear about your friends' negative experiences. We take all feedback seriously and will strive to address these concerns to improve the overall customer experience.
-Speaker B: Thank you, Wendy. I appreciate your attention to these issues.
-Speaker A: You're welcome. If you have any further questions or need assistance in the future, don't hesitate to contact us. We're here to help.
+conversation="""Speaker A: Welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
+Speaker B: Hi Wendy, I'm having trouble with your website. I encountered a bug while trying to book a car.
+Speaker A: I apologize for the inconvenience. Could you please provide more details about the bug you encountered?
+Speaker B: Sure, whenever I try to select a pickup location, the dropdown menu doesn't display any options. It's preventing me from proceeding with my reservation.
+Speaker A: I'm sorry to hear that. Let me escalate this bug report to our technical team for immediate investigation and resolution.
+Speaker B: Thank you. In addition to the bug, I also have some usability recommendations. The layout of your website is confusing, and it's difficult to navigate through the booking process.
+Speaker A: Your feedback is valuable to us. We'll review your usability recommendations and work on enhancing the user experience of our website.
+Speaker B: I appreciate that. I also have some feature requests to suggest improvements for the booking system.
+Speaker A: Please share your feature requests with us. We're always looking for ways to enhance our services and meet the needs of our customers.
+Speaker B: Lastly, I've been dissatisfied with the price of your rentals compared to your competitors. Your prices seem higher, and I'm considering using a different rental service.
+Speaker A: I understand your concern about pricing. We continuously evaluate our pricing strategies to remain competitive in the market. Is there anything specific I can assist you with regarding pricing or booking?
+Speaker B: Not at the moment, thank you. I appreciate your assistance, Wendy.
+Speaker A: You're welcome. If you have any further questions or need assistance in the future, feel free to reach out to us. We're here to help.
 """
