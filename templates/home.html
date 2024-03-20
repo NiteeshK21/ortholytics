@@ -1,21 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Analysis</title>
+    <title>Audio Wizard</title>
     <style>
-        /* CSS styles */
-        body {
+         /* Shared CSS styles */
+         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: black;
+            background-color: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero-background.jpg') center/cover no-repeat;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #59d757;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #aaa;
+        }
+
+        .hero button {
+            background-color: #8fbc8f;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #59d757;
+        }
+
+        /* Custom Form Styles */
+        .form-container {
+            display: none; /* Initially hidden */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-step {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .form-step.active {
+            display: flex;
+        }
+
+        .form-step input[type="text"],
+        .form-step input[type="email"] {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #8fbc8f;
+            border-radius: 5px;
+            background-color: #222;
             color: white;
         }
 
-        .container {
+        .form-step button {
+            background-color: #8fbc8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-step button:hover {
+            background-color: #59d757;
+        }
+
+        /* Additional styles for radio buttons */
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .radio-group label {
+            margin: 0 10px;
+            font-size: 1rem;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+         /* Audio Analysis Styles */
+         .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -65,12 +162,39 @@
             border: 1px solid #8fbc8f;
             border-radius: 5px;
         }
+       
+
     </style>
 </head>
-
 <body>
 
-    <div class="container">
+    <!-- Welcome Page -->
+    <div class="hero" id="welcomePage">
+        <h1>Welcome to Audio Wizard</h1>
+        <p>Discover the magic of sound with our state-of-the-art audio analysis tool.</p>
+        <button onclick="navigateToForm()">Start Your Journey</button>
+    </div>
+
+    <!-- Custom Form Page -->
+    <div class="form-container" id="formPage">
+        <div class="form-step active" id="step1">
+            <h2>Audio type:</h2>
+            <div class="radio-group">
+                <label><input type="radio" name="audioType" value="Single Audio" onclick="scrollToNext('step2')"> Single Audio</label>
+                <label><input type="radio" name="audioType" value="Multi Audio" onclick="scrollToNext('step2')"> Multi Audio</label>
+            </div>
+        </div>
+        <div class="form-step" id="step2">
+            <h2>Organization Name:</h2>
+            <input type="text" id="organization" placeholder="Enter your organization name">
+            <button onclick="submitForm()">Submit</button>
+        </div>
+        
+    </div>
+
+   
+     <!-- Audio Analysis Page -->
+     <div class="container" id="audioAnalysisPage" style="display: none;">
         <h1>Upload Audio File</h1>
         <input type="file" id="audioFile" accept="audio/*">
         <button onclick="uploadAudio()">Upload</button>
@@ -80,10 +204,57 @@
             <div id="analysisText">Your results will appear here...</div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script>
-        function uploadAudio() {
+
+<script>
+        // Variables to store form data
+        var audioType = '';
+        var organizationName = '';
+    
+    function navigateToForm() {
+    // Scroll to the form container
+    document.getElementById('formPage').style.display = 'none';
+            document.getElementById('audioAnalysisPage').style.display = 'block';
+            document.getElementById('audioAnalysisPage').scrollIntoView({ behavior: 'smooth' });
+}
+
+    function scrollToNext(stepId) {
+        // Save audio type from radio buttons
+        var radios = document.getElementsByName('audioType');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                audioType = radios[i].value;
+                break;
+            }
+        }
+
+        // Scroll to the next step
+        document.getElementById(stepId).classList.add('active');
+        document.getElementById(stepId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function submitForm() {
+        // Save organization name
+        organizationName = document.getElementById('organization').value;
+
+        if (organizationName === '') {
+            alert('Please enter your organization name.');
+            return;
+        }
+
+        // Here you can handle the form data, e.g., send it to a server or use it in your application
+        console.log('Audio Type:', audioType);
+        console.log('Organization Name:', organizationName);
+
+        // Hide the form section and show the Dashboard section
+        document.getElementById('formPage').style.display = 'none';
+        document.getElementById('dashboardPage').style.display = 'block';
+
+        // Update the navbar with the organization name and audio type
+        document.getElementById('organizationName').textContent = organizationName;
+        document.getElementById('audioTypeSelected').textContent = audioType;
+    }
+    function uploadAudio() {
             var audioFile = document.getElementById('audioFile').files[0];
             if (audioFile) {
                 // Simulating analysis completion after 3 seconds
@@ -137,9 +308,5 @@
             return cookieValue;
         }
 
-    </script>
-
-</body>
-
-</html>
+</script>
 
