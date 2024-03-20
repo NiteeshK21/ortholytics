@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Wizard</title>
     <style>
-         /* Shared CSS styles */
-         body {
+        /* Shared CSS styles */
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #0a0a0a;
             color: white;
             overflow-x: hidden;
+        }
+
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            /* Ensure the canvas is behind other content */
         }
 
         .hero {
@@ -22,7 +31,7 @@
             align-items: center;
             flex-direction: column;
             text-align: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero-background.jpg') center/cover no-repeat;
+            /* background: url('https://imgs.search.brave.com/AiJqwuVykNDvM-zynqHOZQllL1ubo0710C5ATfysJ9I/rs:fit:500:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzE3LzE2LzQ1/LzM2MF9GXzIxNzE2/NDUwNF95UTV5RmpT/d2M5cU9RdWxRckhB/SFRrS056ZVNpbXlI/Yi5qcGc'); */
         }
 
         .hero h1 {
@@ -54,7 +63,8 @@
 
         /* Custom Form Styles */
         .form-container {
-            display: none; /* Initially hidden */
+            display: none;
+            /* Initially hidden */
             padding: 20px;
             text-align: center;
         }
@@ -111,8 +121,9 @@
         .radio-group input[type="radio"] {
             margin-right: 5px;
         }
-         /* Audio Analysis Styles */
-         .container {
+
+        /* Audio Analysis Styles */
+        .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
@@ -121,7 +132,8 @@
             border-radius: 5px;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             color: #59d757;
         }
 
@@ -162,151 +174,173 @@
             border: 1px solid #8fbc8f;
             border-radius: 5px;
         }
-       
+        /* Loading spinner */
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #fff;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
     </style>
 </head>
+
 <body>
+    <canvas id="backgroundCanvas"></canvas>
+    <div id="content">
+        <!-- Welcome Page -->
+        <div class="hero" id="welcomePage">
+            <!-- <h2>Welcome to Wave.io</h2> -->
+            <h1>Welcome to Wave.io</h1>
+            <p>Discover the magic of sound with our state-of-the-art audio analysis tool.</p>
+            <button onclick="navigateToAudioAnalysis()">Start Your Journey</button>
+        </div>
 
-    <!-- Welcome Page -->
-    <div class="hero" id="welcomePage">
-        <h1>Welcome to Audio Wizard</h1>
-        <p>Discover the magic of sound with our state-of-the-art audio analysis tool.</p>
-        <button onclick="navigateToForm()">Start Your Journey</button>
-    </div>
 
-    <!-- Custom Form Page -->
-    <div class="form-container" id="formPage">
-        <div class="form-step active" id="step1">
-            <h2>Audio type:</h2>
-            <div class="radio-group">
-                <label><input type="radio" name="audioType" value="Single Audio" onclick="scrollToNext('step2')"> Single Audio</label>
-                <label><input type="radio" name="audioType" value="Multi Audio" onclick="scrollToNext('step2')"> Multi Audio</label>
+        <!-- Audio Analysis Page -->
+        <div class="container" id="audioAnalysisPage" style="display: none; justify-content: center;">
+            <h1>Upload Audio File</h1>
+            <input type="file" id="audioFile" accept="audio/*">
+            <button onclick="uploadAudio()">Upload</button>
+
+            <div id="analysisContainer">
+                <h2>Analysis Results:</h2>
+                <div id="analysisText">Processing Conversation...</div>
             </div>
         </div>
-        <div class="form-step" id="step2">
-            <h2>Organization Name:</h2>
-            <input type="text" id="organization" placeholder="Enter your organization name">
-            <button onclick="submitForm()">Submit</button>
-        </div>
-        
-    </div>
 
-   
-     <!-- Audio Analysis Page -->
-     <div class="container" id="audioAnalysisPage" style="display: none;">
-        <h1>Upload Audio File</h1>
-        <input type="file" id="audioFile" accept="audio/*">
-        <button onclick="uploadAudio()">Upload</button>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        <div id="analysisContainer">
-            <h2>Analysis Results:</h2>
-            <div id="analysisText">Your results will appear here...</div>
-        </div>
-    </div>
+        <script>
+            const canvas = document.getElementById('backgroundCanvas');
+            const ctx = canvas.getContext('2d');
 
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-<script>
-        // Variables to store form data
-        var audioType = '';
-        var organizationName = '';
-    
-    function navigateToForm() {
-    // Scroll to the form container
-    document.getElementById('formPage').style.display = 'none';
-            document.getElementById('audioAnalysisPage').style.display = 'block';
-            document.getElementById('audioAnalysisPage').scrollIntoView({ behavior: 'smooth' });
-}
+            const stars = [];
+            const numStars = 900;
 
-    function scrollToNext(stepId) {
-        // Save audio type from radio buttons
-        var radios = document.getElementsByName('audioType');
-        for (var i = 0, length = radios.length; i < length; i++) {
-            if (radios[i].checked) {
-                audioType = radios[i].value;
-                break;
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
             }
-        }
 
-        // Scroll to the next step
-        document.getElementById(stepId).classList.add('active');
-        document.getElementById(stepId).scrollIntoView({ behavior: 'smooth' });
-    }
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    function submitForm() {
-        // Save organization name
-        organizationName = document.getElementById('organization').value;
-
-        if (organizationName === '') {
-            alert('Please enter your organization name.');
-            return;
-        }
-
-        // Here you can handle the form data, e.g., send it to a server or use it in your application
-        console.log('Audio Type:', audioType);
-        console.log('Organization Name:', organizationName);
-
-        // Hide the form section and show the Dashboard section
-        document.getElementById('formPage').style.display = 'none';
-        document.getElementById('dashboardPage').style.display = 'block';
-
-        // Update the navbar with the organization name and audio type
-        document.getElementById('organizationName').textContent = organizationName;
-        document.getElementById('audioTypeSelected').textContent = audioType;
-    }
-    function uploadAudio() {
-            var audioFile = document.getElementById('audioFile').files[0];
-            if (audioFile) {
-                // Simulating analysis completion after 3 seconds
-                setTimeout(function () {
-                    console.log(audioFile);
-                    var formData = new FormData();
-                    // var formData = new FormData($(this)[0]);
-                    formData.append("audioFile", audioFile);
-
-                    var csrftoken = getCookie('csrftoken');
-
-                    $.ajax({
-                        url: "/",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        headers: {
-                            "X-CSRFToken": csrftoken  // Include CSRF token in request headers
-                        },
-                        success: function (response) {
-                            console.log(response['conversation']);
-                            document.getElementById("analysisText").innerText=response['conversation'];
-                            console.log("File uploaded successfully");
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Error uploading file: " + error);
-                        }
-                    });
-                    // Example analysis text
-                    var analysisText = "Analysing audio conversation......";
-                    // Display analysis results in the container
-                    document.getElementById('analysisText').innerText = analysisText;
-                }, 3000);
-            } else {
-                alert('Please select an audio file to upload.');
-            }
-        }
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+                for (let i = 0; i < numStars; i++) {
+                    const star = stars[i];
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fillStyle = '#27e0b2'; // Light green color
+                    ctx.fill();
+                    star.x -= star.speed;
+                    if (star.x < 0) {
+                        star.x = canvas.width;
                     }
                 }
+
+                requestAnimationFrame(draw);
             }
-            return cookieValue;
-        }
 
-</script>
+            draw();
 
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            // Variables to store form data
+            var audioType = '';
+            var organizationName = '';
+
+            function navigateToAudioAnalysis() {
+                // Scroll to the audio analysis section
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('audioAnalysisPage').style.display = 'block';
+                document.getElementById('audioAnalysisPage').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function uploadAudio() {
+    var audioFile = document.getElementById('audioFile').files[0];
+    if (audioFile) {
+        // Display loading spinner
+        document.getElementById('analysisText').innerHTML = '<div class="spinner"></div><p>Uploading audio...</p>';
+
+        // Simulating analysis completion after 3 seconds
+        setTimeout(function () {
+            console.log(audioFile);
+            var formData = new FormData();
+            formData.append("audioFile", audioFile);
+
+            var csrftoken = getCookie('csrftoken');
+
+            $.ajax({
+                url: "/",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
+                success: function (response) {
+                    console.log(response['conversation']);
+                    document.getElementById("analysisText").innerText = response['conversation'];
+                    console.log("File uploaded successfully");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error uploading file: " + error);
+                }
+            });
+
+            var analysisText = "Analysing audio conversation......";
+            document.getElementById('analysisText').innerText = analysisText;
+        }, 3000);
+    } else {
+        alert('Please select an audio file to upload.');
+    }
+}
+
+
+
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+        </script>
+    </div>
+</body>
+
+</html>
