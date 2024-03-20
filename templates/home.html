@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Wizard</title>
+    <style>
+        /* Shared CSS styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            /* Ensure the canvas is behind other content */
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            /* background: url('https://imgs.search.brave.com/AiJqwuVykNDvM-zynqHOZQllL1ubo0710C5ATfysJ9I/rs:fit:500:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzE3LzE2LzQ1/LzM2MF9GXzIxNzE2/NDUwNF95UTV5RmpT/d2M5cU9RdWxRckhB/SFRrS056ZVNpbXlI/Yi5qcGc'); */
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #59d757;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .hero button {
+            background-color: #8fbc8f;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #59d757;
+        }
+
+        /* Custom Form Styles */
+        .form-container {
+            display: none;
+            /* Initially hidden */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-step {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .form-step.active {
+            display: flex;
+        }
+
+        .form-step input[type="text"],
+        .form-step input[type="email"] {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #8fbc8f;
+            border-radius: 5px;
+            background-color: #222;
+            color: white;
+        }
+
+        .form-step button {
+            background-color: #8fbc8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-step button:hover {
+            background-color: #59d757;
+        }
+
+        /* Additional styles for radio buttons */
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .radio-group label {
+            margin: 0 10px;
+            font-size: 1rem;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        /* Audio Analysis Styles */
+        .container {
+            width: 55%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #111;
+            border: none;
+            border-radius: 5px;
+            /* overflow-y: scroll; */
+        }
+/* 
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #111;
+            border: none;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        } */
+
+        h1,
+        h2 {
+            color: #59d757;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+            background-color: #222;
+            color: white;
+            border: 1px solid #8fbc8f;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        button {
+            background-color: #8fbc8f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #59d757;
+        }
+
+        #analysisContainer {
+            margin-top: 20px;
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #diarizedText,#analysisText {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: 1px solid #8fbc8f;
+            border-radius: 5px;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    <div id="content">
+        <!-- Welcome Page -->
+        <div class="hero" id="welcomePage">
+            <!-- <h2>Welcome to Wave.io</h2> -->
+            <h1>Welcome to Wave.io</h1>
+            <p>Empower your business with insightful audio analysis and captivating dashboards.</p>
+            <button onclick="navigateToAudioAnalysis()">Start Your Journey</button>
+        </div>
+
+
+        <!-- Audio Analysis Page -->
+        <div class="container" id="audioAnalysisPage" style="display: none; justify-content: center;">
+            <h1>Upload Audio File</h1>
+            <input type="file" id="audioFile" accept="audio/*">
+            <button onclick="uploadAudio()">Upload</button>
+
+            <div id="analysisContainer">
+                <h2>Diarization Results:</h2>
+                <div id="diarizedText">Your audio conversation will appear here.</div>
+            </div>
+            <div id="analysisContainer">
+                <h2>Basic Overview:</h2>
+                <div id="analysisText">A basic summary of conversation (under build).</div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script>
+            const canvas = document.getElementById('backgroundCanvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const stars = [];
+            const numStars = 900;
+
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let i = 0; i < numStars; i++) {
+                    const star = stars[i];
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fillStyle = '#27e0b2'; // Light green color
+                    ctx.fill();
+                    star.x -= star.speed;
+                    if (star.x < 0) {
+                        star.x = canvas.width;
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            // Variables to store form data
+            var audioType = '';
+            var organizationName = '';
+
+            function navigateToAudioAnalysis() {
+                // Scroll to the audio analysis section
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('audioAnalysisPage').style.display = 'block';
+                document.getElementById('audioAnalysisPage').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            function uploadAudio() {
+                var audioFile = document.getElementById('audioFile').files[0];
+                if (audioFile) {
+                    // Display loading spinner
+                    document.getElementById('diarizedText').innerHTML = '<div class="spinner"></div><p>Uploading audio...</p>';
+
+                    // Simulating analysis completion after 3 seconds
+                    setTimeout(function () {
+                        console.log(audioFile);
+                        var formData = new FormData();
+                        formData.append("audioFile", audioFile);
+
+                        var csrftoken = getCookie('csrftoken');
+
+                        $.ajax({
+                            url: "/",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            headers: {
+                                "X-CSRFToken": csrftoken
+                            },
+                            success: function (response) {
+                                console.log(response['conversation']);
+                                document.getElementById("diarizedText").innerText = response['conversation'];
+                                console.log("File uploaded successfully");
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error uploading file: " + error);
+                            }
+                        });
+
+                        var analysisText = "Analysing audio conversation......";
+                        document.getElementById('diarizedText').innerText = analysisText;
+                    }, 1000);
+                } else {
+                    alert('Please select an audio file to upload.');
+                }
+            }
+
+
+
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+        </script>
+    </div>
+</body>
+
+</html>
