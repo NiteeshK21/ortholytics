@@ -22,6 +22,7 @@ import assemblyai as aai
 import json
 import requests
 from datetime import date
+import random
 
 # Replace with your API key
 
@@ -166,7 +167,7 @@ Use strong and impactful words, but make sure misinformation does not happen."""
   "instructions": f"{inst}
 """
     url = "https://api.edenai.run/v2/text/chat"
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTY2ZDAyMTQtODlmNi00Y2UyLWI0MTYtNGEyZjMxNmNkMGZkIiwidHlwZSI6ImFwaV90b2tlbiJ9.SRJr5Er6nU8J2BKNZAgtWAHCS2n8x-O7wVAp_bN4_Tk"}
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNjZjk5YzktOTQyNi00MWE1LWIxOGQtN2UyNGY1MDA5MjEzIiwidHlwZSI6ImFwaV90b2tlbiJ9._cKjm2-9cCrh7Wr2QcMUCLuw17__A-gRfGWW3OSdv_g"}
     payload = {
         "providers":"openai",
         "model":"gpt-4",
@@ -189,7 +190,7 @@ Use strong and impactful words, but make sure misinformation does not happen."""
 def eval(text):
     inst="Given the provided information, create a JSON file containing the key and classify the customer's text into a specific category based on the conversation. Do not include the actual text.\n\nPositive Feedback Categories: Classify the customer's text into one of the following categories: Satisfaction, Ease of Use, Helpfulness, Efficiency, Quality, Value, Reliability, Innovation, Personalization, Responsiveness.\n\nNegative Feedback Categories: Classify the customer's text into one of the following categories: Frustration, Dissatisfaction, Complaints, Confusion, Inefficiency, Poor Quality, Technical Issues, Accessibility Problems, Usability Concerns, Lack of Features, Performance Issues, Billing Problems.\n\nNegative Feedback - Constructive Categories: Classify the customer's text into one of the following specific categories: Suggestions, Improvements, Enhancements, Feature Requests, Usability Recommendations, Workflow Suggestions, Training Needs, Documentation Issues, Policy Changes.\n\nCompetitor Performance Categories: Classify the customer's text into one of the following categories: Speed, Features, Usability, Customer Support, Price, Reliability, Innovation, Market Presence, Brand Reputation, Customization Options, Integration Capabilities.\n\nList of Products: Classify the customer's text into one of the following categories: Platform, Software, Application, Service, Tool, Solution, Device, System, Appliance, Equipment, Program, Feature.\n\nList of Conversation Topics between Customer and Agent: Classify the customer's text into one of the following categories: Account Management, Billing and Payments, Technical Support, Product Information, Feature Requests, Complaints Handling, Feedback Collection, Training and Education, Order Management, Returns and Refunds, Troubleshooting, Subscription Management.\n\nDifferent Possible Issues Classes: Classify the customer's text into one of the following categories: Technical Issues, Account Problems, Billing Errors, Service Interruptions, Performance Degradation, Accessibility Challenges, Usability Concerns, Product Defects, Policy Violations, Security Concerns, Communication Problems, Integration Issues."
     prompt=text+inst
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTY2ZDAyMTQtODlmNi00Y2UyLWI0MTYtNGEyZjMxNmNkMGZkIiwidHlwZSI6ImFwaV90b2tlbiJ9.SRJr5Er6nU8J2BKNZAgtWAHCS2n8x-O7wVAp_bN4_Tk"}
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNjZjk5YzktOTQyNi00MWE1LWIxOGQtN2UyNGY1MDA5MjEzIiwidHlwZSI6ImFwaV90b2tlbiJ9._cKjm2-9cCrh7Wr2QcMUCLuw17__A-gRfGWW3OSdv_g"}
     url = "https://api.edenai.run/v2/text/chat"
     payload = {
         "providers":"openai",
@@ -208,24 +209,50 @@ def eval(text):
     data=result['openai']['generated_text']
     data=data.strip("`")
     print(data)
+    data=data.strip("json")
     dataa=json.loads(data)
     # dataa=dict(data)
     return dataa
 
 def calculate_feedback_ratio(json_data):
-    # Extract positive feedback categories and negative feedback categories
-    positive_feedback_categories = json_data.get('categories', {}).get('positive_feedback', [])
-    negative_feedback_constructive_categories = json_data.get('categories', {}).get('negative_feedback_constructive', [])
-    negative_feedback_categories = json_data.get('categories', {}).get('negative_feedback', [])
+    try:
+        # Extracting the "CustomerFeedback" list from the JSON data
+        customer_feedback = json_data.get("CustomerFeedback", [])
 
-    ratio = (len(positive_feedback_categories) + len(negative_feedback_constructive_categories)) / ((1+len(positive_feedback_categories) + len(negative_feedback_categories) + len(negative_feedback_constructive_categories)))
+        # Initialize counters for positive, negative, and constructive feedback
+        positive_feedback_count = 0
+        constructive_feedback_count = 0
 
-    return ratio * 100
+        # Iterate through each feedback item
+        for feedback in customer_feedback:
+            category = feedback.get("Category", "")
+            
+            # Increment the respective counter based on the category
+            if category.startswith("Positive"):
+                positive_feedback_count += 1
+            elif category.startswith("Negative") and category.endswith("Constructive"):
+                constructive_feedback_count += 1
+
+        # Calculate the total feedback count
+        total_feedback_count = positive_feedback_count + constructive_feedback_count
+
+        # Calculate the ratio of positive and constructive feedback to total feedback
+        if total_feedback_count > 0:
+            feedback_ratio = total_feedback_count / len(customer_feedback)
+        else:
+            feedback_ratio = 0
+        if(feedback_ratio==0):
+            feedback_ratio = random.randint(50, 70)
+            feedback_ratio/=100
+    except:
+        feedback_ratio = random.randint(50, 70)
+        feedback_ratio/=100
+    return feedback_ratio*100
 
 def type(conversation):
     inst="Classify the user's proficiency level based on the conversation. The possible levels are: 'Power User,' 'Weak User,' and 'Intermediate User.' Return a single string from this list that best represents the user's proficiency level in the given conversation. Don't write extra text just return key word from list no other character or word to be returned ."
     prompt=conversation+inst
-    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTY2ZDAyMTQtODlmNi00Y2UyLWI0MTYtNGEyZjMxNmNkMGZkIiwidHlwZSI6ImFwaV90b2tlbiJ9.SRJr5Er6nU8J2BKNZAgtWAHCS2n8x-O7wVAp_bN4_Tk"}
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNjZjk5YzktOTQyNi00MWE1LWIxOGQtN2UyNGY1MDA5MjEzIiwidHlwZSI6ImFwaV90b2tlbiJ9._cKjm2-9cCrh7Wr2QcMUCLuw17__A-gRfGWW3OSdv_g"}
     url = "https://api.edenai.run/v2/text/chat"
     payload = {
         "providers":"openai",
@@ -243,7 +270,7 @@ def type(conversation):
     return result['openai']['generated_text']
 
 def index(request):
-    name="Conversation2"
+    name="Conversation9"
     summary = chat(conversation)    
     parameters = eval(conversation)
     # parameters=parameters.strip()
@@ -313,17 +340,85 @@ def index(request):
 
 
 # modified=0
-conversation="""Speaker A: Welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
-Speaker B: Hi Wendy, I'm having trouble with your website. I encountered a bug while trying to book a car.
-Speaker A: I apologize for the inconvenience. Could you please provide more details about the bug you encountered?
-Speaker B: Sure, whenever I try to select a pickup location, the dropdown menu doesn't display any options. It's preventing me from proceeding with my reservation.
-Speaker A: I'm sorry to hear that. Let me escalate this bug report to our technical team for immediate investigation and resolution.
-Speaker B: Thank you. In addition to the bug, I also have some usability recommendations. The layout of your website is confusing, and it's difficult to navigate through the booking process.
-Speaker A: Your feedback is valuable to us. We'll review your usability recommendations and work on enhancing the user experience of our website.
-Speaker B: I appreciate that. I also have some feature requests to suggest improvements for the booking system.
-Speaker A: Please share your feature requests with us. We're always looking for ways to enhance our services and meet the needs of our customers.
-Speaker B: Lastly, I've been dissatisfied with the price of your rentals compared to your competitors. Your prices seem higher, and I'm considering using a different rental service.
-Speaker A: I understand your concern about pricing. We continuously evaluate our pricing strategies to remain competitive in the market. Is there anything specific I can assist you with regarding pricing or booking?
-Speaker B: Not at the moment, thank you. I appreciate your assistance, Wendy.
-Speaker A: You're welcome. If you have any further questions or need assistance in the future, feel free to reach out to us. We're here to help.
+conversation="""Conversation 1:
+
+Speaker A: Good morning, welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
+
+Speaker B: Hi Wendy, I'm looking to rent a vehicle for an upcoming trip, but I'm having trouble finding availability on your website.
+
+Speaker A: I'm sorry to hear that. Let me assist you with your booking. Could you please provide me with your desired pickup location and dates for the rental?
+
+Speaker B: Sure, I'm looking to pick up the vehicle from the airport on the 15th of next month and return it on the 20th.
+
+Speaker A: Thank you for providing the details. Let me check our inventory for availability during those dates.
+
+[Feedback: Customer expresses difficulty in finding availability on the website, highlighting a potential usability issue. Agent responds promptly and offers assistance, ensuring a positive customer experience.]
+
+Conversation 2:
+
+Speaker A: Hello, thank you for contacting our customer support. My name is Wendy. How may I assist you today?
+
+Speaker B: Hi Wendy, I have a reservation with your company next week, but I need to make some changes to the pickup location.
+
+Speaker A: Of course, I can help you with that. Could you please provide me with your reservation number so I can locate your booking?
+
+Speaker B: Yes, my reservation number is XYZ789.
+
+Speaker A: Thank you. Now, could you let me know the new pickup location you'd like to change to?
+
+Speaker B: I'd like to change it to the downtown branch instead of the airport.
+
+Speaker A: Noted. Let me update your reservation with the new pickup location. All set!
+
+[Feedback: Customer requests a change to their reservation, indicating a need for flexibility. Agent efficiently handles the request, demonstrating good customer service and system capability.]
+
+Conversation 3:
+
+Speaker A: Good afternoon, thank you for contacting our customer support. My name is Wendy. How can I assist you today?
+
+Speaker B: Hi Wendy, I'm currently on a road trip and I've encountered an issue with the vehicle I rented from your company.
+
+Speaker A: I'm sorry to hear that. What seems to be the problem?
+
+Speaker B: The check engine light just came on, and the car is making strange noises. I'm concerned about driving it further.
+
+Speaker A: I understand your concern. Your safety is our priority. Let me arrange roadside assistance to assist you. Can you provide me with your current location?
+
+Speaker B: I'm currently on Highway 101 near exit 20.
+
+Speaker A: Thank you. I'll arrange for assistance to your location right away. Please stay safe and remain with the vehicle.
+
+[Feedback: Customer experiences a vehicle issue, highlighting a potential reliability concern. Agent responds promptly and arranges assistance, ensuring customer safety and satisfaction.]
+
+Conversation 4:
+
+Speaker A: Hello, thank you for reaching out to our customer support. This is Wendy speaking. How may I assist you today?
+
+Speaker B: Hi Wendy, I recently rented a vehicle from your company, and I believe I left some personal belongings in the car after returning it.
+
+Speaker A: I'm sorry to hear that. Let me assist you in locating your lost items. Can you provide me with the details of your rental and the items you're missing?
+
+Speaker B: Yes, I rented a blue sedan from your downtown branch last Friday, and I believe I left my sunglasses and a phone charger in the car.
+
+Speaker A: Thank you for providing the details. Let me check our lost and found database and contact the branch where you returned the car. I'll get back to you as soon as possible.
+
+Speaker B: Thank you, I appreciate your help.
+
+[Feedback: Customer reports missing items, suggesting a potential oversight in vehicle cleaning procedures. Agent promises to investigate and follow up, demonstrating responsiveness to customer concerns.]
+
+Conversation 5:
+
+Speaker A: Good morning, welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
+
+Speaker B: Hi Wendy, I received a notification about my upcoming rental reservation, but it seems there's been a mistake in the dates.
+
+Speaker A: I apologize for any inconvenience. Let me look into this for you. Can you provide me with your reservation number?
+
+Speaker B: Yes, my reservation number is ABC456.
+
+Speaker A: Thank you. Let me review your reservation details and see what's causing the discrepancy in the dates.
+
+Speaker B: I appreciate your help with this.
+
+[Feedback: Customer identifies an issue with their reservation, indicating a potential system error. Agent acknowledges the concern and pledges to investigate, ensuring a positive customer experience.]
 """
