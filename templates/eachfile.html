@@ -833,50 +833,37 @@
                         <div class="circular-progress">
                             <div class="value-container">0%</div>
                         </div>
-                    </li>
-                    <li>
-                        <!-- Replace this icon with the circular progress bar -->
-                        <!-- Adjust the CSS classes if necessary -->
-                        <div class="circular-progress">
-                            <div class="value-container">0%</div>
+                        <div>
+                            <span style="font-weight: bold; font-size: 25px;">CSAT</span>
+                            <br>
+                            <p style="padding-left: 12px; opacity: 70%;">Score</p>
                         </div>
                     </li>
                     <li>
                         <!-- Replace this icon with the circular progress bar -->
                         <!-- Adjust the CSS classes if necessary -->
+                        <!-- <div class="circular-progress"> -->
+                            <div class="user-avatar" id="weak-user">
+                                <!-- <a href="https://www.flaticon.com/free-icons/worm" title="worm icons">Worm icons created by Umeicon - Flaticon</a> -->
+                                <!-- <img src="templates/caterpillar.png" alt="Caterpillar"> -->
+                                <img src="{% static 'images/caterpillar.png' %}" alt="Your Image">
+                            </div>
+                        
+                            <!-- <div class="value-container">0%</div> -->
+                        <!-- </div> -->
+                    </li>
+                    <li>
+                        <!-- Replace this icon with the circular progress bar -->
+                        <!-- Adjust the CSS classes if necessary -->
                         <div class="circular-progress">
-                            <div class="value-container">0%</div>
+                            <!-- <div class="value-container">0%</div> -->
                         </div>
                     </li>
                 </ul>
                 <div class="order" id="report">
-<p>Customer Experience:
-
-    The customer expresses dissatisfaction with the product's website functionality, specifically in finding available rental cars.
-    There is frustration due to the lack of availability of rental cars for the desired dates and locations.
-    The customer appears to be seeking a seamless and efficient booking experience but is facing challenges with the current process.
-    
-    Competitor Analysis:
-    
-    The customer indirectly mentions using alternative car rental websites to check for availability, suggesting competition in the market.
-    Competitors are perceived as having better availability and functionality compared to the product being discussed.
-    The customer may be inclined to switch to competitors if the current product does not improve its service.
-    
-    Issue Identification:
-    
-    The main issue highlighted by the customer is the unavailability of rental cars on the product's website for desired dates and locations.
-    There is a discrepancy between the availability shown on the product's website and that of competitors, leading to frustration and doubt in the product's reliability.
-    The customer's repeated attempts to find a suitable rental car indicate a recurring issue with the product's booking system.
-    
-    Suggestions from Customer:
-    
-    The customer suggests that the product's website may have technical issues causing the lack of availability.
-    Improving the accuracy and real-time updates of available rental cars on the website is crucial to enhance the customer experience.
-    Addressing the discrepancy between the product's availability and that of competitors is essential to retain customers and improve satisfaction.
-    
-    Overall, the customer's experience reflects dissatisfaction with the product's booking system and availability. Addressing the technical issues, ensuring real-time updates, and enhancing the overall user experience are key areas for improvement to retain customers and remain competitive in the market.</p>
+                    <p></p>
                 </div>
-                    <!-- <div class="head">
+                <!-- <div class="head">
                         <h3>Uploaded Audio Files</h3>
                         <i class='bx bx-search'></i>
                         <i class='bx bx-filter'></i>
@@ -905,6 +892,7 @@
         fileData = {{ files | safe }}
         // fileData = JSON.parse(fileData); 
         console.log(fileData);
+        score=fileData["score"]
         $(document).ready(function () {
             // closeForm();
             for (var i = 0; i < fileData.length; i++) {
@@ -999,6 +987,37 @@
                 document.body.classList.remove('dark');
             }
         })
+
+    // Select all circular progress bars
+const progressBars = document.querySelectorAll(".circular-progress");
+const valueContainers = document.querySelectorAll(".value-container");
+
+// Function to update progress for each progress bar
+function updateProgress(progressBar, valueContainer, progressEndValue) {
+    let progressValue = 0;
+    let speed = 50;
+
+    let progress = setInterval(() => {
+        progressValue++;
+        valueContainer.textContent = `${progressValue}%`;
+        progressBar.style.background = `conic-gradient(
+            #4d5bf9 ${progressValue * 3.6}deg,
+            #cadcff ${progressValue * 3.6}deg
+        )`;
+        if (progressValue == progressEndValue) {
+            clearInterval(progress);
+        }
+    }, speed);
+}
+
+// Example CSTV scores for each progress bar (replace with actual values)
+const cstvScores = [score]; // Example CSTV score values for each progress bar
+
+// Loop through each progress bar and update dynamically
+progressBars.forEach((progressBar, index) => {
+    const progressEndValue = cstvScores[index];
+    updateProgress(progressBar, valueContainers[index], progressEndValue);
+});
     </script>
 </body>
 

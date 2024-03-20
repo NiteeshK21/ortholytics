@@ -270,66 +270,42 @@ def type(conversation):
     return result['openai']['generated_text']
 
 def index(request):
-    name="Conversation9"
-    summary = chat(conversation)    
-    parameters = eval(conversation)
-    # parameters=parameters.strip()
-    # parameters=parameters[4:]
-    # print(parameters)
-    # parameters=json.loads(parameters)
-    # parameters=parameters["CustomerFeedback"]
-    score = calculate_feedback_ratio(parameters)
-    user_type=type(conversation)
-    today = date.today()
-    today = today.strftime("%d/%m/%Y")
-    interactions_schedule=db['interactions']
-    data={
-        "file_name":name,
-        "date":today,
-        "score":score,
-        "UserType":user_type,
-        "conversation":conversation,
-        "summary":summary,
-        "parameters":parameters
-    }
-    print(data)
-    interactions_schedule.insert_one(data)
-    # if request.method == 'POST':
-    #     if request.FILES['audioFile']:
-    #         audio_file = request.FILES['audioFile']
-    #         print(audio_file)
-    #         # with open('temp_audio.wav', 'wb') as f:
-    #         #     for chunk in audio_file.chunks():
-    #         #         f.write(chunk)
-    #         # print(audio_file.name)
-    #         # conversation=diarization('temp_audio.wav')
-    #         global conversation
-    #         # global modified
-    #         # if(modified!=1):
-    #         # conversation=conversation.replace("Speaker", "\n\nSpeaker")
-    #         # conversation=conversation[2:]
-    #         # modified=1
-    #         summary = chat(conversation)
-    #         parameters = eval(conversation)
-    #         score = calculate_feedback_ratio(parameters)
-    #         today = date.today()
-    #         today = today.strftime("%d/%m/%Y")
-    #         interactions_schedule=db['interactions']
-    #         data={
-    #             "file_name":audio_file.name,
-    #             "date":today,
-    #             "score":score,
-    #             "conversation":conversation,
-    #             "summary":summary,
-    #             "parameters":parameters
-    #         }
-    #         print(data)
-    #         interactions_schedule.insert_one(data)
-    #         # summary="dummy summary"
-    #         return JsonResponse({'conversation': conversation,
-    #                              "summary":summary})
-    #     else:
-    #         return JsonResponse({'error': 'Invalid request'}, status=400)
+    if request.method == 'POST':
+        if request.FILES['audioFile']:
+            audio_file = request.FILES['audioFile']
+            print(audio_file)
+            # with open('temp_audio.wav', 'wb') as f:
+            #     for chunk in audio_file.chunks():
+            #         f.write(chunk)
+            # print(audio_file.name)
+            # conversation=diarization('temp_audio.wav')
+            global conversation
+            # global modified
+            # if(modified!=1):
+            # conversation=conversation.replace("Speaker", "\n\nSpeaker")
+            # conversation=conversation[2:]
+            # modified=1
+            summary = chat(conversation)
+            parameters = eval(conversation)
+            score = calculate_feedback_ratio(parameters)
+            today = date.today()
+            today = today.strftime("%d/%m/%Y")
+            interactions_schedule=db['interactions']
+            data={
+                "file_name":audio_file.name,
+                "date":today,
+                "score":score,
+                "conversation":conversation,
+                "summary":summary,
+                "parameters":parameters
+            }
+            print(data)
+            interactions_schedule.insert_one(data)
+            # summary="dummy summary"
+            return JsonResponse({'conversation': conversation,
+                                 "summary":summary})
+        else:
+            return JsonResponse({'error': 'Invalid request'}, status=400)
     context={
     }
     return render(request, "home.html", context)

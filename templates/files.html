@@ -897,6 +897,37 @@
                 document.body.classList.remove('dark');
             }
         })
+
+        // Select all circular progress bars
+        const progressBars = document.querySelectorAll(".circular-progress");
+        const valueContainers = document.querySelectorAll(".value-container");
+
+        // Function to update progress for each progress bar
+        function updateProgress(progressBar, valueContainer, progressEndValue) {
+            let progressValue = 0;
+            let speed = 50;
+
+            let progress = setInterval(() => {
+                progressValue++;
+                valueContainer.textContent = `${progressValue}%`;
+                progressBar.style.background = `conic-gradient(
+            #4d5bf9 ${progressValue * 3.6}deg,
+            #cadcff ${progressValue * 3.6}deg
+        )`;
+                if (progressValue == progressEndValue) {
+                    clearInterval(progress);
+                }
+            }, speed);
+        }
+
+        // Example CSTV scores for each progress bar (replace with actual values)
+        const cstvScores = [75, 60, 85]; // Example CSTV score values for each progress bar
+
+        // Loop through each progress bar and update dynamically
+        progressBars.forEach((progressBar, index) => {
+            const progressEndValue = cstvScores[index];
+            updateProgress(progressBar, valueContainers[index], progressEndValue);
+        });
     </script>
 </body>
 
