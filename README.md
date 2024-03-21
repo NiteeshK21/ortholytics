@@ -3,8 +3,57 @@
 ---
 
 ## Description
+# Wave.io - Audio Analytics Platform
 
-Wave.io is an advanced audio analytics platform designed to automate dashboard creation, feedback and report generation, and provide services for audio-based chat interactions. Our platform streamlines the process of analyzing audio data, extracting key insights, and facilitating communication through audio chat capabilities.
+---
+
+## Description
+
+Wave.io is an innovative and comprehensive audio analytics platform that empowers businesses to unlock valuable insights from their audio data. By leveraging state-of-the-art technologies, Wave.io streamlines the process of analyzing audio files, providing advanced features for diarization, automatic speech recognition (ASR), and keyword extraction across various categories.
+
+### Key Features:
+
+- **Diarization:** Wave.io offers robust diarization capabilities, allowing users to segment audio recordings into distinct speaker segments. This feature is particularly useful for call center analytics, interview transcription, and meeting analysis.
+
+- **Automatic Speech Recognition (ASR):** With Wave.io's ASR functionality, users can accurately transcribe audio content into text in multiple languages. This feature enables efficient content indexing, transcription services, and content analysis.
+
+- **Keyword Extraction:** Wave.io facilitates the extraction of key insights from audio data by identifying and categorizing keywords across different domains. Users can classify audio content into predefined categories such as positive feedback, negative feedback, constructive feedback, competitor performance, products, conversation topics, and issues.
+
+### Problems Solved:
+
+- **Data Analysis Automation:** Wave.io automates the process of analyzing audio data, eliminating the need for manual transcription and analysis. This saves time and resources, enabling businesses to focus on deriving actionable insights from their data.
+
+- **Customer Feedback Analysis:** By categorizing customer feedback into meaningful categories such as positive feedback, negative feedback, and constructive feedback, Wave.io helps businesses gain deeper insights into customer sentiment, preferences, and pain points.
+
+- **Competitor Performance Monitoring:** Wave.io enables businesses to track and analyze competitor performance across various metrics such as speed, features, usability, customer support, price, reliability, innovation, market presence, brand reputation, customization options, and integration capabilities.
+
+- **Product Insights:** With Wave.io's keyword extraction capabilities, businesses can gain valuable insights into their products, identifying key features, customer preferences, and areas for improvement.
+
+- **Conversation Analysis:** Wave.io facilitates the analysis of conversations between customers and agents, helping businesses understand common topics, customer inquiries, and areas for improvement in customer service.
+
+- **Issue Detection and Resolution:** Wave.io identifies and categorizes issues mentioned in audio recordings, enabling businesses to proactively address technical issues, account problems, billing errors, service interruptions, performance degradation, accessibility challenges, usability concerns, product defects, policy violations, security breaches, communication problems, and integration issues.
+
+---
+
+## Table of Contents
+
+1. [Project's Title](#projects-title)
+2. [Project Description](#project-description)
+3. [Key Features](#key-features)
+4. [Problems Solved](#problems-solved)
+5. [How to Install and Run](#how-to-install-and-run)
+6. [How to Use the Project](#how-to-use-the-project)
+7. [Credits](#credits)
+8. [License](#license)
+
+---
+
+## Project's Title
+
+Wave.io - Audio Analytics Platform
+
+...
+
 
 ---
 
