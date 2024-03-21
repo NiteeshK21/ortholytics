@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<script>
+window.onload = function () {
+
+// Function to generate random sentiment scores
+function generateRandomScores() {
+    var scores = [];
+    for (var i = 0; i < 12; i++) {
+        scores.push(Math.floor(Math.random() * 101)); // Generate random score between 0 and 100
+    }
+    return scores;
+}
+
+// Data for sentiment scores
+var sentimentScores = generateRandomScores();
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Sentiment Scores by Location"
+	},
+	axisX: {
+		title: "Locations"
+	},
+	axisY: {
+		title: "Sentiment Score",
+        minimum: 0,
+        maximum: 100
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: true,
+	},
+	data: [
+		{        
+			type: "line",
+			showInLegend: true,
+			name: "Sentiment Score",
+			dataPoints: [
+				{ label: "Delhi", y: sentimentScores[0] },
+				{ label: "Mumbai", y: sentimentScores[1]},
+				{ label: "Bangalore", y: sentimentScores[2] },
+				{ label: "Kolkata", y: sentimentScores[3] },
+				{ label: "Chennai", y: sentimentScores[4] },
+				{ label: "Hyderabad", y: sentimentScores[5] },
+				{ label: "Pune", y: sentimentScores[6] },
+				{ label: "Ahmedabad", y: sentimentScores[7] },
+				{ label: "Jaipur", y: sentimentScores[8] },
+				{ label: "Lucknow", y: sentimentScores[9] },
+				{ label: "Surat", y: sentimentScores[10] },
+				{ label: "Indore", y: sentimentScores[11] }
+			]
+		}
+	]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; width: 80%;"></div> <!-- Reduced width to 80% -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

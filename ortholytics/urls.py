@@ -26,4 +26,5 @@ urlpatterns = [
     path('myfiles', views.files,  name='files'),
     path('eachfile', views.eachfile,  name='eachfile'),
     path('chat', views.chatAnalysis,  name='chat'),
+    path('plots', views.plots,  name='plot'),
 ]

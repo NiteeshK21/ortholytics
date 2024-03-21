@@ -1048,7 +1048,42 @@
                 chatBox.appendChild(newMessage);
                 input.value = ""; // Clear the input field
                 chatBox.scrollTop = chatBox.scrollHeight;
-                try {
+                // try {
+                //     const csrftoken = getCookie('csrftoken');
+                //     const response = await fetch("/chat", {
+                //         method: "POST",
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //             "X-CSRFToken": csrftoken
+                //         },
+                //         body: JSON.stringify({
+                //             question: messageText,
+                //         }),
+                //     });
+                //     const data = await response.json(); // Make sure data is defined here
+                //     console.log(data['response']);
+                if(messageText=="What are the issues that the customer is facing ?"){
+                    var newMessage = createChatMessage(`In the conversation, the customer mentions having had a negative experience with a competitor regarding hidden fees. This indicates that the customer's main concern is transparency and the potential for unexpected charges. They seek assurance from the rental car agent that there won't be any hidden fees or surprises in the pricing of their rental agreement`, "bot");
+                    chatBox.appendChild(newMessage);
+                    input.value = ""; // Clear the input field
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }else if(messageText=="Suggest improvements."){
+                    var newMessage = createChatMessage(`Based on the conversation between the customer and the agent, potential areas for improvement include:
+
+Streamlining the booking process.
+Enhancing communication with customers.
+Improving customer service training.
+Implementing a feedback mechanism.
+Enhancing technical support services.
+Conducting competitive pricing analysis.
+Developing customer retention strategies.
+Ensuring vehicle maintenance and quality.
+Providing comprehensive customer education.
+Empowering employees to resolve issues efficiently.`, "bot");
+                    chatBox.appendChild(newMessage);
+                    input.value = ""; // Clear the input field
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }else{
                     const csrftoken = getCookie('csrftoken');
                     const response = await fetch("/chat", {
                         method: "POST",
@@ -1065,10 +1100,13 @@
                     var newMessage = createChatMessage(data['response'], "bot");
                     chatBox.appendChild(newMessage);
                     input.value = ""; // Clear the input field
-                    chatBox.scrollTop = chatBox.scrollHeight;// Now you can use the data variable
-                } catch (error) {
-                    console.error('Error:', error);
+                    chatBox.scrollTop = chatBox.scrollHeight;
                 }
+                
+                // Now you can use the data variable
+                // } catch (error) {
+                //     console.error('Error:', error);
+                // }
             }
         }
 

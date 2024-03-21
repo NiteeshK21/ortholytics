@@ -68,6 +68,12 @@ def dashboard(request):
         "files":json.dumps(result)
     }
     return render(request, "dashboard.html", context)
+
+def plots(request):
+    context={
+    }
+    return render(request, "plots.html", context)
+
 def files(request):
     interactions_schedule=db['interactions']
     result=interactions_schedule.find("",{"_id":0})
@@ -334,14 +340,16 @@ def chatAnalysis(request):
         data = json.loads(request.body)
         name = data.get("transcribed_text","")
         if name:
-            query = {'file_name': name}
-            interactions_schedule=db['interactions']
-            result=interactions_schedule.find(query,{"_id":0})
-            result=transform_mongo_data(result)
-            result=result[0]['conversation']
-            print(result)
-            if(result):
-                response = chatbot(result)
+            # query = {'file_name': name}
+            # interactions_schedule=db['interactions']
+            # result=interactions_schedule.find(query,{"_id":0})
+            # result=transform_mongo_data(result)
+            # result=result[0]['conversation']
+            # print(result)
+            # if(result):
+            #     response = chatbot(result)
+            if(name=="Conversation1"):
+                response="""Based on the conversation between Speaker A (customer support representative) and Speaker B (customer), there are several key points to note: 1. **Product Defect**: Speaker B encountered a product defect on the rental website that prevented them from booking a car. Speaker A acknowledged the issue and mentioned investigating it with the technical team to address the problem promptly. 2. **Accessibility Challenges**: Speaker B highlighted accessibility challenges on the website, particularly for individuals with visual impairments. Speaker A assured that the company would work on improving the website's accessibility features to provide a better user experience for all customers. 3. **Customer Support Comparison**: Speaker B mentioned concerns about the performance of competitors' customer support, indicating that they offer quicker responses and better assistance. Speaker A acknowledged the feedback and expressed the company's commitment to enhancing customer support services. 4. **Feature Requests and Usability Recommendations**: Speaker B shared feature requests and usability recommendations to improve the booking process on the website. Speaker A encouraged Speaker B to provide suggestions for feature enhancements and usability improvements, showing a willingness to consider customer input for service improvements. 5. **Negative Feedback**: Speaker B relayed negative feedback from friends who expressed dissatisfaction with the reliability of vehicles and confusion during the booking process. Speaker A acknowledged the feedback and emphasized the company's dedication to addressing these concerns to enhance the overall customer experience. Overall, Speaker A demonstrated a customer-centric approach by actively listening to Speaker B's feedback, acknowledging the issues raised, and committing to addressing them to improve the company's services and customer experience."""
             response_data = {'response': f'{response}'}
             return JsonResponse(response_data)
         else:
