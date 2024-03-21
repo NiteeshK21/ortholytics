@@ -1,7 +1,3 @@
-# Wave.io - Audio Analytics Platform
-
----
-
 ## Description
 # Wave.io - Audio Analytics Platform
 
