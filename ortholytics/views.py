@@ -280,28 +280,28 @@ def index(request):
             # print(audio_file.name)
             # conversation=diarization('temp_audio.wav')
             global conversation
-            # global modified
-            # if(modified!=1):
-            # conversation=conversation.replace("Speaker", "\n\nSpeaker")
-            # conversation=conversation[2:]
-            # modified=1
-            summary = chat(conversation)
-            parameters = eval(conversation)
-            score = calculate_feedback_ratio(parameters)
-            today = date.today()
-            today = today.strftime("%d/%m/%Y")
-            interactions_schedule=db['interactions']
-            data={
-                "file_name":audio_file.name,
-                "date":today,
-                "score":score,
-                "conversation":conversation,
-                "summary":summary,
-                "parameters":parameters
-            }
-            print(data)
-            interactions_schedule.insert_one(data)
-            # summary="dummy summary"
+            global modified
+            if(modified!=1):
+                conversation=conversation.replace("Speaker", "\n\nSpeaker")
+                conversation=conversation[2:]
+            modified=1
+            # summary = chat(conversation)
+            # parameters = eval(conversation)
+            # score = calculate_feedback_ratio(parameters)
+            # today = date.today()
+            # today = today.strftime("%d/%m/%Y")
+            # interactions_schedule=db['interactions']
+            # data={
+            #     "file_name":audio_file.name,
+            #     "date":today,
+            #     "score":score,
+            #     "conversation":conversation,
+            #     "summary":summary,
+            #     "parameters":parameters
+            # }
+            # print(data)
+            # interactions_schedule.insert_one(data)
+            summary="dummy summary" 
             return JsonResponse({'conversation': conversation,
                                  "summary":summary})
         else:
@@ -315,86 +315,5 @@ def index(request):
 
 
 
-# modified=0
-conversation="""Conversation 1:
-
-Speaker A: Good morning, welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
-
-Speaker B: Hi Wendy, I'm looking to rent a vehicle for an upcoming trip, but I'm having trouble finding availability on your website.
-
-Speaker A: I'm sorry to hear that. Let me assist you with your booking. Could you please provide me with your desired pickup location and dates for the rental?
-
-Speaker B: Sure, I'm looking to pick up the vehicle from the airport on the 15th of next month and return it on the 20th.
-
-Speaker A: Thank you for providing the details. Let me check our inventory for availability during those dates.
-
-[Feedback: Customer expresses difficulty in finding availability on the website, highlighting a potential usability issue. Agent responds promptly and offers assistance, ensuring a positive customer experience.]
-
-Conversation 2:
-
-Speaker A: Hello, thank you for contacting our customer support. My name is Wendy. How may I assist you today?
-
-Speaker B: Hi Wendy, I have a reservation with your company next week, but I need to make some changes to the pickup location.
-
-Speaker A: Of course, I can help you with that. Could you please provide me with your reservation number so I can locate your booking?
-
-Speaker B: Yes, my reservation number is XYZ789.
-
-Speaker A: Thank you. Now, could you let me know the new pickup location you'd like to change to?
-
-Speaker B: I'd like to change it to the downtown branch instead of the airport.
-
-Speaker A: Noted. Let me update your reservation with the new pickup location. All set!
-
-[Feedback: Customer requests a change to their reservation, indicating a need for flexibility. Agent efficiently handles the request, demonstrating good customer service and system capability.]
-
-Conversation 3:
-
-Speaker A: Good afternoon, thank you for contacting our customer support. My name is Wendy. How can I assist you today?
-
-Speaker B: Hi Wendy, I'm currently on a road trip and I've encountered an issue with the vehicle I rented from your company.
-
-Speaker A: I'm sorry to hear that. What seems to be the problem?
-
-Speaker B: The check engine light just came on, and the car is making strange noises. I'm concerned about driving it further.
-
-Speaker A: I understand your concern. Your safety is our priority. Let me arrange roadside assistance to assist you. Can you provide me with your current location?
-
-Speaker B: I'm currently on Highway 101 near exit 20.
-
-Speaker A: Thank you. I'll arrange for assistance to your location right away. Please stay safe and remain with the vehicle.
-
-[Feedback: Customer experiences a vehicle issue, highlighting a potential reliability concern. Agent responds promptly and arranges assistance, ensuring customer safety and satisfaction.]
-
-Conversation 4:
-
-Speaker A: Hello, thank you for reaching out to our customer support. This is Wendy speaking. How may I assist you today?
-
-Speaker B: Hi Wendy, I recently rented a vehicle from your company, and I believe I left some personal belongings in the car after returning it.
-
-Speaker A: I'm sorry to hear that. Let me assist you in locating your lost items. Can you provide me with the details of your rental and the items you're missing?
-
-Speaker B: Yes, I rented a blue sedan from your downtown branch last Friday, and I believe I left my sunglasses and a phone charger in the car.
-
-Speaker A: Thank you for providing the details. Let me check our lost and found database and contact the branch where you returned the car. I'll get back to you as soon as possible.
-
-Speaker B: Thank you, I appreciate your help.
-
-[Feedback: Customer reports missing items, suggesting a potential oversight in vehicle cleaning procedures. Agent promises to investigate and follow up, demonstrating responsiveness to customer concerns.]
-
-Conversation 5:
-
-Speaker A: Good morning, welcome to our rental vehicle customer support. My name is Wendy. How can I assist you today?
-
-Speaker B: Hi Wendy, I received a notification about my upcoming rental reservation, but it seems there's been a mistake in the dates.
-
-Speaker A: I apologize for any inconvenience. Let me look into this for you. Can you provide me with your reservation number?
-
-Speaker B: Yes, my reservation number is ABC456.
-
-Speaker A: Thank you. Let me review your reservation details and see what's causing the discrepancy in the dates.
-
-Speaker B: I appreciate your help with this.
-
-[Feedback: Customer identifies an issue with their reservation, indicating a potential system error. Agent acknowledges the concern and pledges to investigate, ensuring a positive customer experience.]
-"""
+modified=0
+conversation="""Speaker A: Thank you for calling concierge department. My name is Wendy. With whom do I have the pleasure of speaking with today? Hi, Jason. How are you doing today?Speaker B: Not so good. I found out that I'm not able to find any locations that are offering rental cars to throw in my hundred dollar bank balance. And I have with penns oil. I keep searching every single town, but there's no results. So I think something's wrong here. I want to. If it's possible, I could use my Penzoil savings code somewhere else in order to rent a car. I don't find the booking website really reliable at all. It's not really helping me get any cars.Speaker A: Okay. I understand where you're coming from. Really sorry about all the convenience being caused. What I can go ahead and do is that I could try to run the search on my end to see if I could get something there for you. If not. But unfortunately, you cannot use your benzo points anywhere else other than the website, sir.Speaker B: Okay, well, I'm pretty sure something's wrong with the website because it's not giving me any results no matter where I search.Speaker A: I'm really sorry. Allow me to go ahead and try to run the search on Mando. Okay. But I would need a phone number that's associated with the account. Can you provide that over to me, please? Okay. It doesn't seem that an account is being pulled up by that number. Do you think it's associated with an email address that you could provide me with, please? Okay. One moment. Okay, perfect. I was able to locate your account. Thank you for being a member of Pennsylvania travel rewards. Allow me one moment. Let me go ahead and try to run the search. Can you go ahead and provide me the information for this car rental? Where will it be picked up and where will it be dropped off?Speaker B: The series auto center in Antioch. Find out what options are available. I want to find a car, that's Ford car that I can rent for around $90 to $120. For one day.Speaker A: For one day. What will be this specific day, sir?Speaker B: Today. The earliest possible time.Speaker A: Today in antidoc? Correct.Speaker B: Sorry.Speaker A: Allow me one moment. That's Antioch, California?Speaker B: Yes.Speaker A: And when will the car be dropped off? Tomorrow, the 18th, correct?Speaker B: Yes.Speaker A: Will you be picking up at noon?Speaker B: Noon is fine.Speaker A: And dropping off the same time? Allow me one moment. Yeah, so, unfortunately, I do see that it's giving me the same error. It does says that everything is already sold out for these specific days that you are looking for.Speaker B: Yeah, but if you look at different time period, it's going to say the same thing in every location.Speaker A: Yeah. So I do see that being pulled up. I'm trying different dates and different locations. And I do see that everything is sold out as well. Yeah, I don't see anything being pulled up there. Allow me one moment. Let me see if I could find something in our back inventory for you. Okay.Speaker B: Yeah. The closest location at any office.Speaker A: Okay, one moment here. I'm just trying to see if I could find something there. Okay. All right. Okay, so I'm seeing here that for the dates that you are looking for, I have a economy Chevrolet spark, Ford Fiesta is similar. This is with Hertz.Speaker B: It says here which Hertz location?Speaker A: All right, allow me one moment. Let me try to get the only one that I see that is being picked up here. The only address that I have is. That is the only thing that I see here.Speaker B: Okay. If I search Concord myself, maybe I can find that look at it manually. Okay. I'm searching right now and it says we're unable to find any available vehicles in Concord. Did you put a specific date or time or something?Speaker A: Actually, like I said, this is in our back inventory. So it's something that only the agents have access to. So this is something that we. So basically, can you give me the.Speaker B: List of the options?Speaker A: Okay, so I have the economy, Chevrolet Spark, Ford Fisser, similar. This is with Hertz. I also have a compact car, which is a Ford Focus, Nissan versa or similar.Speaker B: Can you go a little slower?Speaker A: Okay, sorry about that. That is the compact, Ford Focus, Nissan versa or similar. This is to be picked up at two four as well. It says twelve point, 92 miles from antioxidity center. I also have an economy, Chevrolet Spark, Ford Fiesta, similar again, to be picked up at.Speaker B: That location. Says it's closed. Can you look at the Hertz and monument boulevard?Speaker A: Okay, not a problem. So it says here closes at 12:00 p.m. As well. So that would be the time that you would be picking up the car.Speaker B: Okay, so which location closed?Speaker A: It seems that all of them close at 12:00 p.m. And then there is no other one to be picked up somewhere else, unfortunately, sir.Speaker B: So I do have time left to pick it up.Speaker A: Okay, so all of them close at 12:00 p.m. I don't know what time you're seeing now, but.Speaker B: My time right now is 10:24 a.m., okay.Speaker A: Because I have 1124. So it doesn't give me a specific time as well, time zone. So it does says here at 12:00 p.m. 09:00 a.m. To 12:00 p.m.. California.Speaker B: So it's still open. The same location you're talking about?Speaker A: Yeah. So that will be crow Canyon. It says here.Speaker B: Wait a minute, I thought you said so none of the Concord locations are open right now?Speaker A: No sir. Unfortunately not all of them are closed.Speaker B: And the only ones in San Ramon. Okay that's fine. Let me see what can you tell me the options available in that location.Speaker A: Okay, so for that one I have an economy Chevrolet spark, Ford Fiesta are similar. That is the only one. And then I have a compact car which is also at the Crow Canyon for a Ford Focus. Nissan versus are similar as well.Speaker B: I'm looking for something around 100 or between 90 and $120.Speaker A: Okay.Speaker B: In San Ramon, is that the only location where you're able to find anything near me?Speaker A: Yeah. So like I said, everything else is already closed. The only one that will close at twelve is the one in Crow Canyon Place, San Ramon, California.Speaker B: Okay, so I have about 30 minutes to make. I have about an hour until I can make it over there.Speaker A: Yes.Speaker B: Can you give me the list of cars that have a six cylinder or eight cylinder? I'm not interested in economy cars so you could avoid that. But I just want to make sure you give me a list of cars that are between eighty dollars to one hundred and twenty dollars and that I can rent for one day and start starting with the most expensive one.Speaker A: Okay, allow me one moment. So for the prices that I see here on my end, I do see that they're a bit cheap. So I'm just trying to see more or less the information that I could go ahead and give out to you.Speaker B: Okay, that's fine. If you can start from the most expensive one top to bottom.Speaker A: Okay. So I have here a premium brick regal or similar. This is.Speaker B: Wait, can you go slower? I want to type it out. Brick regal or similar. What type of brick regal is it?Speaker A: It just says premium brick regal or similar. That is the car type there. It doesn't really.Speaker B: I need to know which model. Okay, so I see what you mean. Is it a 2017 Buke regal turbo premium?Speaker A: Yeah.Speaker B: Okay. And how much is that for?Speaker A: Okay so this one is for $97 total.Speaker B: I'm not interested in that one. Can you go on to the next one?Speaker A: Okay. I have a luxury crystal 300 or similar.Speaker B: And how much is that?Speaker A: This is for 80 total.Speaker B: What year?Speaker A: Okay, this one does not specify which year it is exactly. It just gives me the Chrisler 300 or similar.Speaker B: Okay, so can you find out if I book that one?Speaker A: Can you find out for that? That would have to be directly with the agency and I would have to give them a call to see.Speaker B: Okay, can you find out if any of those locations are open tomorrow? Coffee, Santa Roland or any. If not, I'll just book it today.Speaker A: Okay, is it okay if I place you on a brief hold while I try to see if I can get some information there?Speaker B: Okay, that's fine.Speaker C: Good morning, thank you for calling hertz Remo. My name is Patty, how can I help you?Speaker A: Hi, Patty, this is Wendy calling from. I just have a question about a car here. I wanted to know more or less about the luxury car. This one is for. Allow me to get you that specific information there. This is the Chrisler 300 or similar. I just wanted to know more or less what year this is.Speaker C: Are you in a rental right now?Speaker A: No, but I'm actually trying to place a reservation for one of my clients. But he wants to know the exact year of this luxury Chrysler 300.Speaker C: Okay, let me check that for you. What year is it? Chrysler 300. Chrysler 300 is. We don't have one right now, but most of our cars are new. We don't have a Chrysler 300 right now.Speaker A: Okay, so if I place this reservation for today, it wouldn't be available?Speaker C: No, it would not. We don't have a Chrysler 300.Speaker A: Okay, what are the cars?Speaker C: 300. Excuse me.Speaker A: Go ahead, ma'am, how can I help you? Okay, I just wanted to know more or less what cars are available at the moment because he needs to pick this car up today. And I see that you guys are closing at 12:00 p.m.. Yeah, so he.Speaker C: Needs a luxury car.Speaker A: He said he just wants to know more. He was interested in this one. But you said that they're not really available at the moment, so I don't want to go ahead and place that and that when he arrives, it's not there. So more or less, what are the cars that you have available?Speaker C: I'm going to put you on a brief hold.Speaker A: Okay.Speaker C: Right now we are waiting on return. We don't have anything available right at the moment. Would you like me to take your name and number and call you when something comes available?Speaker A: All right, so is it okay if I give you guys a call back? Because he said that he needs the car today, so more or less in about an hour. So I'll go ahead and send this information just to inform him that I don't see that there is anything available at the moment. Directly with you guys and I'll see what I can fix with him. Okay. Then if he decides, then I can give you guys a call back. Thank you very much.Speaker C: Okay, I'm going to take you so much.Speaker A: All right, bye bye. Hello?Speaker B: Yes, I'm here.Speaker A: Thank you for holding. Okay, so I just got in contact with the agency and they explained that there are no cars available at the moment. And that is why we were seeing that there is nothing available neither for any dates on the website since it is close to California with the same agency. So they told me that there is nothing available and they're waiting on returns. So if we go ahead and book with Hertz, that would not be possible there since that is the only one that I'm seeing that is available at the moment here for the specific location and the dates.Speaker B: Okay, so can I go ahead and book it for the price of 300?Speaker A: Okay, so like I said, if you go ahead and like I said, there is no car available and the luxury chrisler isn't available as well as for what she just told me. So it wouldn't really be recommended to go ahead and place a reservation for today or either tomorrow because it would not be available now since they are just waiting on returns at the moment, they don't have any cars available.Speaker B: Well, I doubt. Can you find out? Can you do some more searching to see if there's any other locations besides that have cars?Speaker A: Okay, allow me one moment. Sir, are you there? All right, perfect. It seems that for the dates that you're looking for, since it would be from today to tomorrow or either tomorrow or the 19th, it really does tell me that there is nothing available for the dates that you are looking for or this specific location. I already tried Antioch, Concord and I don't see anything being pulled up there for the dates that you are requesting to have this car and everything that I try says that they are already sold out.Speaker B: Okay. Can you find out if there's any locations close to me in Concord or any other cities near me for tomorrow, sir?Speaker A: Okay, I'm trying everything in California and it doesn't seem that anything is giving me a location there. I've tried.Speaker B: Okay, what about Monday?Speaker A: I've been changing the date, sir, and I don't see that there is nothing available. All of it tells me that they are sold out for any dates because I've tried from the 17th up to the 29th and I don't see any availability.Speaker B: Yeah, but when I look directly at the website or a different car rental website, they say there is availability, so it's most likely related to your website. The problem is from website itself.Speaker A: Yeah, well, like I said, I'm actually not specifically on the website. I'm in my back inventory and I still don't see that there is nothing available. Hello? Hello? For quality assurance and training purposes, I'll be disconnecting this call."""

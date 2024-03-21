@@ -723,6 +723,18 @@
             font-size: 18px;
             color: #231c3d;
         }
+
+        .positive {
+            color: green;
+        }
+
+        .negative {
+            color: red;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -830,8 +842,8 @@
                     <li>
                         <!-- Replace this icon with the circular progress bar -->
                         <!-- Adjust the CSS classes if necessary -->
-                        <div class="circular-progress">
-                            <div class="value-container">0%</div>
+                        <div class="circular-progress" id="csat_score">
+                            <div class="value-container" id="value_cont">0%</div>
                         </div>
                         <div>
                             <span style="font-weight: bold; font-size: 25px;">CSAT</span>
@@ -843,25 +855,78 @@
                         <!-- Replace this icon with the circular progress bar -->
                         <!-- Adjust the CSS classes if necessary -->
                         <!-- <div class="circular-progress"> -->
-                            <div class="user-avatar" id="weak-user">
-                                <!-- <a href="https://www.flaticon.com/free-icons/worm" title="worm icons">Worm icons created by Umeicon - Flaticon</a> -->
-                                <!-- <img src="templates/caterpillar.png" alt="Caterpillar"> -->
-                                <img src="{% static 'images/caterpillar.png' %}" alt="Your Image">
-                            </div>
-                        
-                            <!-- <div class="value-container">0%</div> -->
+                        <div class="user-avatar" id="user-avatar">
+                            <!-- <img src="" alt="" style="width: 60px; height: 60px;"> -->
+                            <img id="avatar-image" src="" alt="" style="width: 60px; height: 60px;">
+                        </div>
+                        <div>
+                            <p id="user_type" style="padding-left: 12px; opacity: 70%;">Power user</p>
+                        </div>
+
+                        <!-- <div class="value-container">0%</div> -->
                         <!-- </div> -->
                     </li>
                     <li>
                         <!-- Replace this icon with the circular progress bar -->
                         <!-- Adjust the CSS classes if necessary -->
-                        <div class="circular-progress">
+                        <!-- <div class="circular-progress"> -->
                             <!-- <div class="value-container">0%</div> -->
-                        </div>
+                        <!-- </div> -->
                     </li>
                 </ul>
-                <div class="order" id="report">
-                    <p></p>
+                <div class="order" id="report" style="overflow-y: scroll; height: 450px;">
+                    <h1>Customer Feedback Report</h1>
+
+                    <section>
+                        <h2>Customer Experience:</h2>
+                        <ul>
+                            <li>Overall satisfaction level: The customer expresses dissatisfaction with the website's
+                                bug affecting the booking process and finds the layout confusing.</li>
+                            <li>Positive aspects: The customer appreciates the support agent's responsiveness and
+                                willingness to address issues promptly.</li>
+                            <li>Challenges or dissatisfaction: The customer faces challenges with the website's
+                                functionality, navigation, and pricing compared to competitors.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Competitor Analysis:</h2>
+                        <ul>
+                            <li>Mention of competitors: The customer hints at considering using a different rental
+                                service due to dissatisfaction with pricing.</li>
+                            <li>Appeal of competitors: The customer finds competitors' prices more competitive and is
+                                considering switching.</li>
+                            <li>Perception of the product: The customer perceives the product as having higher prices
+                                compared to competitors, leading to potential customer loss.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Issue Identification:</h2>
+                        <ul>
+                            <li>Issues or pain points: The customer faces a bug in the website's dropdown menu,
+                                confusing layout, and dissatisfaction with pricing.</li>
+                            <li>Severity and frequency: The bug prevents the customer from proceeding with the
+                                reservation, impacting the user experience significantly.</li>
+                            <li>Common themes: The issues revolve around website functionality, navigation difficulties,
+                                and pricing competitiveness.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Suggestions from Customer:</h2>
+                        <ul>
+                            <li>Feedback for improvement: The customer provides usability recommendations, feature
+                                requests, and highlights the need for pricing adjustments.</li>
+                            <li>Feasibility and relevance: Implementing user-friendly website design, enhancing booking
+                                features, and revising pricing strategies are crucial for addressing customer concerns
+                                and improving satisfaction.</li>
+                        </ul>
+                    </section>
+
+                    <p>Overall, the customer's feedback emphasizes the importance of addressing website bugs, enhancing
+                        user experience, and remaining competitive in pricing to retain customers and attract new ones.
+                        Implementing these suggestions can lead to improved customer satisfaction and loyalty.</p>
                 </div>
                 <!-- <div class="head">
                         <h3>Uploaded Audio Files</h3>
@@ -889,11 +954,45 @@
     <!-- <script src="script.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        fileData = {{ files | safe }}
+
+        function getLink(user_type) {
+            if (user_type === 'Weak User') {
+                return 'https://cdn-icons-png.flaticon.com/512/4167/4167257.png'; // Caterpillar link
+            } else if (user_type === 'Intermediate User') {
+                return 'https://cdn.vectorstock.com/i/1000x1000/51/33/butterfly-icon-logo-vector-31665133.webp'; // Butterfly link
+            } else if (user_type === 'Power User') {
+                return 'https://www.nicepng.com/png/full/78-784146_eagle-9-silhouette-icons-png-eagle-silhouette-png.png'; // Eagle link
+            }
+        }
+        function updateUserAvatar(src, alt) {
+            var avatarImage = document.getElementById('avatar-image');
+            if (avatarImage) {
+                avatarImage.src = src;
+                avatarImage.alt = alt;
+            }
+        }
+        $(document).ready(function () {
+            fileData = {{ files | safe }};
         // fileData = JSON.parse(fileData); 
         console.log(fileData);
-        score=fileData["score"]
-        $(document).ready(function () {
+        score =10;
+        score = fileData["score"];
+        // const progressBars = document.querySelectorAll(".circular-progress");
+        const progressBar = document.getElementById("csat_score");
+        const valueContainers = document.getElementById("value_cont");
+        // const valueContainers = document.querySelectorAll(".value-container");
+        updateProgress(progressBar, valueContainers, score);
+        summary = fileData["summary"];
+        user_type = fileData["UserType"];
+        document.getElementById('user_type').textContent = user_type;
+        link = getLink(user_type);
+        console.log(user_type);
+        console.log(link);
+        updateUserAvatar(link, user_type);
+            const paragraph = document.querySelector('.order p');
+
+            // Set the text content of the <p> element
+            paragraph.textContent = summary;
             // closeForm();
             for (var i = 0; i < fileData.length; i++) {
                 feedTable(fileData[i])
@@ -988,36 +1087,34 @@
             }
         })
 
-    // Select all circular progress bars
-const progressBars = document.querySelectorAll(".circular-progress");
-const valueContainers = document.querySelectorAll(".value-container");
+        // Select all circular progress bars
 
-// Function to update progress for each progress bar
-function updateProgress(progressBar, valueContainer, progressEndValue) {
-    let progressValue = 0;
-    let speed = 50;
 
-    let progress = setInterval(() => {
-        progressValue++;
-        valueContainer.textContent = `${progressValue}%`;
-        progressBar.style.background = `conic-gradient(
+        // Function to update progress for each progress bar
+        function updateProgress(progressBar, valueContainer, progressEndValue) {
+            let progressValue = 0;
+            let speed = 50;
+
+            let progress = setInterval(() => {
+                progressValue++;
+                valueContainer.textContent = `${progressValue}%`;
+                progressBar.style.background = `conic-gradient(
             #4d5bf9 ${progressValue * 3.6}deg,
             #cadcff ${progressValue * 3.6}deg
         )`;
-        if (progressValue == progressEndValue) {
-            clearInterval(progress);
+                if (progressValue == progressEndValue) {
+                    clearInterval(progress);
+                }
+            }, speed);
         }
-    }, speed);
-}
 
-// Example CSTV scores for each progress bar (replace with actual values)
-const cstvScores = [score]; // Example CSTV score values for each progress bar
-
-// Loop through each progress bar and update dynamically
-progressBars.forEach((progressBar, index) => {
-    const progressEndValue = cstvScores[index];
-    updateProgress(progressBar, valueContainers[index], progressEndValue);
-});
+        // Example CSTV scores for each progress bar (replace with actual values)
+        // const cstvScores = [57]; // Example CSTV score values for each progress bar
+        // // Loop through each progress bar and update dynamically
+        // progressBars.forEach((progressBar, index) => {
+        //     const progressEndValue = 57;
+        //     updateProgress(progressBar, valueContainers[index], progressEndValue);
+        // });
     </script>
 </body>
 

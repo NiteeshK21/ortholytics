@@ -597,6 +597,58 @@
             margin-bottom: 0;
         }
 
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(#e8f0f7 10%, #C7D2FE 50%);
+        }
+
+        .container {
+            height: 100px;
+            width: 100px;
+            background-color: #ffffff;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 8px;
+            box-shadow: 20px 20px 40px rgba(60, 60, 150, 0.25);
+            display: grid;
+            place-items: center;
+        }
+
+        .circular-progress {
+            position: relative;
+            height: 75px;
+            width: 75px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .circular-progress:before {
+            content: "";
+            position: absolute;
+            height: 84%;
+            width: 84%;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+
+        .value-container {
+            position: relative;
+            font-family: "Poppins", sans-serif;
+            font-size: 18px;
+            color: #231c3d;
+        }
+
         /* MAIN */
         /* CONTENT */
 
@@ -779,11 +831,14 @@
 
             <ul class="box-info">
                 <li>
-                    <i class='bx bxs-calendar-check'></i>
-                    <span class="text">
-                        <h3>1020</h3>
-                        <p>New Order</p>
-                    </span>
+                    <div class="circular-progress" id="csat_score">
+                        <div class="value-container" id="value_cont">0%</div>
+                    </div>
+                    <div>
+                        <span style="font-weight: bold; font-size: 25px; padding-left: 40px;">AVG CSAT</span>
+                        <br>
+                        <p style="padding-left: 77px; opacity: 70%;">Score</p>
+                    </div>
                 </li>
                 <li>
                     <i class='bx bxs-group'></i>
@@ -800,7 +855,170 @@
                     </span>
                 </li>
             </ul>
-            <div class="table-data" if="prev-table">
+            <div class="table-data" if="prev-table" style="overflow-y: scroll; height: 400px;">
+
+                <div class="todo" id="barchart" style="height: 350px; width: 50%;">
+                    <!DOCTYPE html>
+                    <html lang="en">
+
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Feedback Frequency Chart</title>
+                        <!-- Include Chart.js library -->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    </head>
+
+                    <body>
+                        <canvas id="myChart"></canvas>
+
+                        <script>
+                            // Sample data for the chart
+                            const feedbackData = {
+                                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                                positiveFeedback: [65, 59, 80, 10, 56, 55, 40],
+                                negativeFeedback: [45, 49, 70, 71, 46, 45, 30],
+                                constructiveFeedback: [5, 9, 92, 1, 61, 25, 0]
+                            };
+
+                            // Configuration for the chart
+                            const config = {
+                                type: 'line',
+                                data: {
+                                    labels: feedbackData.labels,
+                                    datasets: [{
+                                        label: 'Positive Feedback',
+                                        data: feedbackData.positiveFeedback,
+                                        fill: true,
+                                        borderColor: "#6366F1",
+                                        backgroundColor: 'rgba(59, 130, 246, 0.2)', // Solid color background
+                                        borderWidth: 2
+                                    },
+                                    {
+                                        label: 'Negative Feedback',
+                                        data: feedbackData.negativeFeedback,
+                                        fill: true,
+                                        borderColor: "#20c997",
+                                        backgroundColor: 'rgba(32, 201, 151, 0.2)', // Solid color background
+                                        borderWidth: 2
+                                    },
+                                    {
+                                        label: 'Constructive Feedback',
+                                        data: feedbackData.constructiveFeedback,
+                                        fill: true,
+                                        borderColor: "#f6c23e",
+                                        backgroundColor: 'rgba(246, 194, 62, 0.2)', // Solid color background
+                                        borderWidth: 2
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Number of Feedbacks'
+                                            }
+                                        },
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: 'Month'
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            enabled: true,
+                                            mode: 'index',
+                                            intersect: false
+                                        }
+                                    },
+                                    interaction: {
+                                        mode: 'index',
+                                        intersect: false
+                                    }
+                                }
+                            };
+
+                            // Initialize the chart
+                            var myChart = new Chart(
+                                document.getElementById('myChart'),
+                                config
+                            );
+                        </script>
+                    </body>
+
+                    </html>
+                </div>
+                <div class="todo" id="doughnut" style="height: 350px; width: 50%">
+                    <!DOCTYPE HTML>
+                    <html>
+
+                    <head>
+                        <script type="text/javascript">
+                            window.onload = function () {
+                                var keywords = [
+                                    "Speed",
+                                    "Features",
+                                    "Usability",
+                                    "Customer Support",
+                                    "Price",
+                                    "Reliability",
+                                    "Innovation",
+                                    "Market Presence",
+                                    "Brand Reputation",
+                                    "Customization Options",
+                                    "Integration Capabilities"
+                                ];
+
+                                var dataPoints = [
+                                    { y: 15, indexLabel: keywords[0] },
+                                    { y: 12, indexLabel: keywords[1] },
+                                    { y: 10, indexLabel: keywords[2] },
+                                    { y: 8, indexLabel: keywords[3] },
+                                    { y: 7, indexLabel: keywords[4] },
+                                    { y: 6, indexLabel: keywords[5] },
+                                    { y: 5, indexLabel: keywords[6] },
+                                    { y: 4, indexLabel: keywords[7] },
+                                    { y: 3, indexLabel: keywords[8] },
+                                    { y: 2, indexLabel: keywords[9] },
+                                    { y: 1, indexLabel: keywords[10] }
+                                ];
+
+                                // Calculate the total sum of values
+                                var totalSum = dataPoints.reduce((acc, dp) => acc + dp.y, 0);
+
+                                // Convert each data point's value to a percentage
+                                dataPoints.forEach(dp => {
+                                    dp.y = (dp.y / totalSum * 100).toFixed(2);
+                                    dp.indexLabel += " (" + dp.y + "%)";
+                                });
+
+                                var chart = new CanvasJS.Chart("chartContainer", {
+                                    title: {
+                                        text: "Competitor Performance Keywords"
+                                    },
+                                    data: [
+                                        {
+                                            type: "doughnut",
+                                            dataPoints: dataPoints
+                                        }
+                                    ]
+                                });
+
+                                chart.render();
+                            }
+                        </script>
+                        <script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+                    </head>
+
+                    <body>
+                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    </body>
+
+                    </html>
+                </div>
                 <div class="order">
                     <div class="head">
                         <h3>Uploaded Audio Files</h3>
@@ -819,35 +1037,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="todo">
-                    <div class="head">
-                        <h3>Todos</h3>
-                        <i class='bx bx-plus'></i>
-                        <i class='bx bx-filter'></i>
-                    </div>
-                    <ul class="todo-list">
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                        <li class="not-completed">
-                            <p>Todo List</p>
-                            <i class='bx bx-dots-vertical-rounded'></i>
-                        </li>
-                    </ul>
-                </div>
+            </div>
             </div>
         </main>
         <!-- MAIN -->
@@ -860,11 +1050,20 @@
         fileData = {{ files | safe }}
         // fileData = JSON.parse(fileData); 
         console.log(fileData);
+        csat_score = 0;
         $(document).ready(function () {
             // closeForm();
             for (var i = 0; i < fileData.length; i++) {
-                feedTable(fileData[i])
+                feedTable(fileData[i]);
+                csat_score += fileData[i]['score'];
             }
+            csat_score = csat_score / i + 1;
+            console.log(csat_score);
+            const progressBar = document.getElementById("csat_score");
+            const valueContainers = document.getElementById("value_cont");
+            // const valueContainers = document.querySelectorAll(".value-container");
+            updateProgress(progressBar, valueContainers, Math.ceil(csat_score));
+            // document.getElementById("")
         });
 
         function feedTable(fileData) {
@@ -979,6 +1178,23 @@
                 document.body.classList.remove('dark');
             }
         })
+
+        function updateProgress(progressBar, valueContainer, progressEndValue) {
+            let progressValue = 0;
+            let speed = 50;
+
+            let progress = setInterval(() => {
+                progressValue++;
+                valueContainer.textContent = `${progressValue}%`;
+                progressBar.style.background = `conic-gradient(
+            #4d5bf9 ${progressValue * 3.6}deg,
+            #cadcff ${progressValue * 3.6}deg
+        )`;
+                if (progressValue == progressEndValue) {
+                    clearInterval(progress);
+                }
+            }, speed);
+        }
     </script>
 </body>
 
