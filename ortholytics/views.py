@@ -310,6 +310,57 @@ def index(request):
     }
     return render(request, "home.html", context)
 
+def chatbot(text):
+    headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNjZjk5YzktOTQyNi00MWE1LWIxOGQtN2UyNGY1MDA5MjEzIiwidHlwZSI6ImFwaV90b2tlbiJ9._cKjm2-9cCrh7Wr2QcMUCLuw17__A-gRfGWW3OSdv_g"}
+    url = "https://api.edenai.run/v2/text/chat"
+    payload = {
+        "providers":"openai",
+        "model":"gpt-4",
+        "text": text,
+        "chatbot_global_action": "You are an expert data analyst.",
+        "previous_history": [],
+        "temperature": 0.2,
+        "max_tokens": 1000,
+        "fallback_providers": ""
+    }
+    response = requests.post(url, json=payload, headers=headers)
+
+    result = json.loads(response.text)
+    return result['openai']['generated_text']
+
+def chatAnalysis(request):
+    if request.method == 'POST':
+        # Parse the JSON data from the request body
+        data = json.loads(request.body)
+        name = data.get("transcribed_text","")
+        if name:
+            query = {'file_name': name}
+            interactions_schedule=db['interactions']
+            result=interactions_schedule.find(query,{"_id":0})
+            result=transform_mongo_data(result)
+            result=result[0]['conversation']
+            print(result)
+            if(result):
+                response = chatbot(result)
+            response_data = {'response': f'{response}'}
+            return JsonResponse(response_data)
+        else:
+            question = data.get('question', '')
+            response = chatbot(question)
+            response_data = {'response': f'{response}'}
+            return JsonResponse(response_data)
+            # print(question)
+            # return 'answer'
+    else:
+        interactions_schedule=db['interactions']
+        result=interactions_schedule.find("",{"_id":0})
+        result=transform_mongo_data(result)
+        context={
+            "files":json.dumps(result)
+        }
+        return render(request, 'chhat.html', context)
+    # return render(request, "files.html", context)
+
 
 
 

@@ -33,7 +33,7 @@
             --lato: 'Lato', sans-serif;
 
             --light: #F9F9F9;
-            --blue: #4f46e5;
+            --blue: #3C91E6;
             --light-blue: #CFE8FF;
             --grey: #eee;
             --dark-grey: #AAAAAA;
@@ -727,6 +727,94 @@
                 min-width: 420px;
             }
         }
+
+        /* body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f7f7;
+        } */
+
+        .chat-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 100px;
+            background-color: #4951c8;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chat-box {
+            width: 100%;
+            max-height: 4000px;
+            overflow-y: auto;
+            padding: 80px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 70%;
+            display: flex;
+        }
+
+        .user {
+            background-color: #007bff;
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot {
+            background-color: #f1f1f1;
+            color: #333;
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+
+        .input-area {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            margin-right: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100px;
+            height: 40px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -809,7 +897,7 @@
                     <h1>Dashboard</h1>
                     <ul class="breadcrumb">
                         <li>
-                            <a href="#">Dashboard</a>
+                            <a href="#">ChatAnalysis</a>
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
                         <li>
@@ -822,198 +910,8 @@
                     <span class="text">Download PDF</span>
                 </a>
             </div>
-
-            <ul class="box-info">
-                <li>
-                    <div class="circular-progress" id="csat_score">
-                        <div class="value-container" id="value_cont">0%</div>
-                    </div>
-                    <div>
-                        <span style="font-weight: bold; font-size: 25px; padding-left: 40px;">AVG CSAT</span>
-                        <br>
-                        <p style="padding-left: 77px; opacity: 70%;">Score</p>
-                    </div>
-                </li>
-                <li>
-                    <i class='bx bxs-group'></i>
-                    <span class="text">
-                        <h3>2834</h3>
-                        <p>Visitors</p>
-                    </span>
-                </li>
-                <li>
-                    <i class='bx bxs-dollar-circle'></i>
-                    <span class="text">
-                        <h3>$2543</h3>
-                        <p>Total Sales</p>
-                    </span>
-                </li>
-            </ul>
             <div class="table-data" if="prev-table" style="overflow-y: scroll; height: 400px;">
-
-                <div class="todo" id="barchart" style="height: 350px; width: 50%;">
-                    <!DOCTYPE html>
-                    <html lang="en">
-
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Feedback Frequency Chart</title>
-                        <!-- Include Chart.js library -->
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    </head>
-
-                    <body>
-                        <canvas id="myChart"></canvas>
-
-                        <script>
-                            // Sample data for the chart
-                            const feedbackData = {
-                                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                                positiveFeedback: [65, 59, 80, 10, 56, 55, 40],
-                                negativeFeedback: [45, 49, 70, 71, 46, 45, 30],
-                                constructiveFeedback: [5, 9, 92, 1, 61, 25, 0]
-                            };
-
-                            // Configuration for the chart
-                            const config = {
-                                type: 'line',
-                                data: {
-                                    labels: feedbackData.labels,
-                                    datasets: [{
-                                        label: 'Positive Feedback',
-                                        data: feedbackData.positiveFeedback,
-                                        fill: true,
-                                        borderColor: "#6366F1",
-                                        backgroundColor: 'rgba(59, 130, 246, 0.2)', // Solid color background
-                                        borderWidth: 2
-                                    },
-                                    {
-                                        label: 'Negative Feedback',
-                                        data: feedbackData.negativeFeedback,
-                                        fill: true,
-                                        borderColor: "#20c997",
-                                        backgroundColor: 'rgba(32, 201, 151, 0.2)', // Solid color background
-                                        borderWidth: 2
-                                    },
-                                    {
-                                        label: 'Constructive Feedback',
-                                        data: feedbackData.constructiveFeedback,
-                                        fill: true,
-                                        borderColor: "#f6c23e",
-                                        backgroundColor: 'rgba(246, 194, 62, 0.2)', // Solid color background
-                                        borderWidth: 2
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            title: {
-                                                display: true,
-                                                text: 'Number of Feedbacks'
-                                            }
-                                        },
-                                        x: {
-                                            title: {
-                                                display: true,
-                                                text: 'Month'
-                                            }
-                                        }
-                                    },
-                                    plugins: {
-                                        tooltip: {
-                                            enabled: true,
-                                            mode: 'index',
-                                            intersect: false
-                                        }
-                                    },
-                                    interaction: {
-                                        mode: 'index',
-                                        intersect: false
-                                    }
-                                }
-                            };
-
-                            // Initialize the chart
-                            var myChart = new Chart(
-                                document.getElementById('myChart'),
-                                config
-                            );
-                        </script>
-                    </body>
-
-                    </html>
-                </div>
-                <div class="todo" id="doughnut" style="height: 350px; width: 50%">
-                    <!DOCTYPE HTML>
-                    <html>
-
-                    <head>
-                        <script type="text/javascript">
-                            window.onload = function () {
-                                var keywords = [
-                                    "Speed",
-                                    "Features",
-                                    "Usability",
-                                    "Customer Support",
-                                    "Price",
-                                    "Reliability",
-                                    "Innovation",
-                                    "Market Presence",
-                                    "Brand Reputation",
-                                    "Customization Options",
-                                    "Integration Capabilities"
-                                ];
-
-                                var dataPoints = [
-                                    { y: 15, indexLabel: keywords[0] },
-                                    { y: 12, indexLabel: keywords[1] },
-                                    { y: 10, indexLabel: keywords[2] },
-                                    { y: 8, indexLabel: keywords[3] },
-                                    { y: 7, indexLabel: keywords[4] },
-                                    { y: 6, indexLabel: keywords[5] },
-                                    { y: 5, indexLabel: keywords[6] },
-                                    { y: 4, indexLabel: keywords[7] },
-                                    { y: 3, indexLabel: keywords[8] },
-                                    { y: 2, indexLabel: keywords[9] },
-                                    { y: 1, indexLabel: keywords[10] }
-                                ];
-
-                                // Calculate the total sum of values
-                                var totalSum = dataPoints.reduce((acc, dp) => acc + dp.y, 0);
-
-                                // Convert each data point's value to a percentage
-                                dataPoints.forEach(dp => {
-                                    dp.y = (dp.y / totalSum * 100).toFixed(2);
-                                    dp.indexLabel += " (" + dp.y + "%)";
-                                });
-
-                                var chart = new CanvasJS.Chart("chartContainer", {
-                                    title: {
-                                        text: "Competitor Performance Keywords"
-                                    },
-                                    data: [
-                                        {
-                                            type: "doughnut",
-                                            dataPoints: dataPoints
-                                        }
-                                    ]
-                                });
-
-                                chart.render();
-                            }
-                        </script>
-                        <script type="text/javascript" src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-                    </head>
-
-                    <body>
-                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-                    </body>
-
-                    </html>
-                </div>
-                <div class="order">
+                <div class="order" id="table">
                     <div class="head">
                         <h3>Uploaded Audio Files</h3>
                         <i class='bx bx-search'></i>
@@ -1031,6 +929,20 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="chat-container" id="chat-container" style="display: none;">
+                    <div class="chat-box" id="chatBox">
+                        <!-- Chat messages will go here -->
+                        <!-- <div class="chat-message bot">
+                            Hello, how can I help you?
+                        </div> -->
+                        <!-- More chat messages -->
+                    </div>
+                    <div class="input-area">
+                        <input type="text" id="userInput" placeholder="Type a message...">
+                        <button id="sendButton">Send</button>
+                    </div>
+                </div>
+
             </div>
             </div>
         </main>
@@ -1044,20 +956,11 @@
         fileData = {{ files | safe }}
         // fileData = JSON.parse(fileData); 
         console.log(fileData);
-        csat_score = 0;
         $(document).ready(function () {
             // closeForm();
             for (var i = 0; i < fileData.length; i++) {
                 feedTable(fileData[i]);
-                csat_score += fileData[i]['score'];
             }
-            csat_score = csat_score / i + 1;
-            console.log(csat_score);
-            const progressBar = document.getElementById("csat_score");
-            const valueContainers = document.getElementById("value_cont");
-            // const valueContainers = document.querySelectorAll(".value-container");
-            updateProgress(progressBar, valueContainers, Math.ceil(csat_score));
-            // document.getElementById("")
         });
 
         function feedTable(fileData) {
@@ -1069,11 +972,42 @@
             row = row + '</tr>';
             $('#prev-table tbody').append(row);
         }
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
-        function handleRowClick(name) {
+        async function handleRowClick(name) {
             // Open a new tab with the /eachfile endpoint and send the name as a parameter
+            document.getElementById("table").style.display = "none";
+            document.getElementById("chat-container").style.display = "block";
+            // createChatMessage("name", 'user');
+            var newMessage = createChatMessage(name, "user");
+            chatBox.appendChild(newMessage);
+            input.value = ""; // Clear the input field
+            chatBox.scrollTop = chatBox.scrollHeight;
             console.log(name);
-            window.open('/eachfile?name=' + encodeURIComponent(name), '_blank');
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({
+                    transcribed_text: name,
+                }),
+            });
+            const data = await response.json();;
+            // Make sure data is defined here
+            console.log(data);
+            var newMessage = createChatMessage(data['response'], "bot");
+            chatBox.appendChild(newMessage);
+            input.value = ""; // Clear the input field
+            chatBox.scrollTop = chatBox.scrollHeight;
+            // window.location.href = data['url'];
+            // window.open('/eachfile?name=' + encodeURIComponent(name), '_blank');
         }
         $('#prev-table tbody').on('click', 'tr', function () {
             var rowData = {};
@@ -1084,17 +1018,6 @@
             console.log(rowData);
             handleRowClick(rowData['File Name']);
         })
-        // Add event listener to each row of the table
-        document.querySelectorAll('#prev-table tbody tr').forEach(row => {
-            row.addEventListener('click', function () {
-                console.log('Brrrrrrr');
-                // Get the value of the name column
-                var name = this.querySelector('td:first-child').innerText;
-
-                // Call the function to handle row click event
-                handleRowClick(name);
-            });
-        });
 
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
@@ -1108,87 +1031,64 @@
                 li.classList.add('active');
             })
         });
+        var input = document.getElementById("userInput");
+        var chatBox = document.getElementById("chatBox");
 
-
-
-
-        // TOGGLE SIDEBAR
-        const menuBar = document.querySelector('#content nav .bx.bx-menu');
-        const sidebar = document.getElementById('sidebar');
-
-        menuBar.addEventListener('click', function () {
-            sidebar.classList.toggle('hide');
-        })
-
-
-
-
-
-
-
-        const searchButton = document.querySelector('#content nav form .form-input button');
-        const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
-        const searchForm = document.querySelector('#content nav form');
-
-        searchButton.addEventListener('click', function (e) {
-            if (window.innerWidth < 576) {
-                e.preventDefault();
-                searchForm.classList.toggle('show');
-                if (searchForm.classList.contains('show')) {
-                    searchButtonIcon.classList.replace('bx-search', 'bx-x');
-                } else {
-                    searchButtonIcon.classList.replace('bx-x', 'bx-search');
+        // Function to create a new chat message
+        function createChatMessage(text, sender) {
+            var messageDiv = document.createElement("div");
+            messageDiv.classList.add("chat-message", sender);
+            messageDiv.textContent = text;
+            return messageDiv;
+        }
+        async function sendMessage(newMessage) {
+            var messageText = input.value.trim();
+            if (messageText !== "") {
+                var newMessage = createChatMessage(messageText, "user");
+                chatBox.appendChild(newMessage);
+                input.value = ""; // Clear the input field
+                chatBox.scrollTop = chatBox.scrollHeight;
+                try {
+                    const csrftoken = getCookie('csrftoken');
+                    const response = await fetch("/chat", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrftoken
+                        },
+                        body: JSON.stringify({
+                            question: messageText,
+                        }),
+                    });
+                    const data = await response.json(); // Make sure data is defined here
+                    console.log(data['response']);
+                    var newMessage = createChatMessage(data['response'], "bot");
+                    chatBox.appendChild(newMessage);
+                    input.value = ""; // Clear the input field
+                    chatBox.scrollTop = chatBox.scrollHeight;// Now you can use the data variable
+                } catch (error) {
+                    console.error('Error:', error);
                 }
             }
-        })
-
-
-
-
-
-        if (window.innerWidth < 768) {
-            sidebar.classList.add('hide');
-        } else if (window.innerWidth > 576) {
-            searchButtonIcon.classList.replace('bx-x', 'bx-search');
-            searchForm.classList.remove('show');
         }
 
+        // Event listener for the send button
+        document.getElementById("sendButton").addEventListener("click", function () {
+            sendMessage();
+        });
 
-        window.addEventListener('resize', function () {
-            if (this.innerWidth > 576) {
-                searchButtonIcon.classList.replace('bx-x', 'bx-search');
-                searchForm.classList.remove('show');
+        // Event listener for the enter key in the input field
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                sendMessage();
             }
-        })
-
-
-
-        const switchMode = document.getElementById('switch-mode');
-
-        switchMode.addEventListener('change', function () {
-            if (this.checked) {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
-            }
-        })
-
-        function updateProgress(progressBar, valueContainer, progressEndValue) {
-            let progressValue = 0;
-            let speed = 50;
-
-            let progress = setInterval(() => {
-                progressValue++;
-                valueContainer.textContent = `${progressValue}%`;
-                progressBar.style.background = `conic-gradient(
-            #4d5bf9 ${progressValue * 3.6}deg,
-            #cadcff ${progressValue * 3.6}deg
-        )`;
-                if (progressValue == progressEndValue) {
-                    clearInterval(progress);
-                }
-            }, speed);
+        });
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
         }
+
     </script>
 </body>
 

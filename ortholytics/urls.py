@@ -25,4 +25,5 @@ urlpatterns = [
     path('dashboard', views.dashboard,  name='dashboard'),
     path('myfiles', views.files,  name='files'),
     path('eachfile', views.eachfile,  name='eachfile'),
+    path('chat', views.chatAnalysis,  name='chat'),
 ]
