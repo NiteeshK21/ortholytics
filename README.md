@@ -1,3 +1,13 @@
+## Table of Contents
+
+1. [Project's Title](#projects-title)
+2. [Project Description](#project-description)
+3. [Key Features](#key-features)
+4. [Problems Solved](#problems-solved)
+5. [How to Install and Run](#how-to-install-and-run)
+6. [How to Use the Project](#how-to-use-the-project)
+7. [Credits](#credits)
+8. [License](#license)
 # Wave.io - Audio Analytics Platform
 ---
 ## Description
@@ -46,16 +56,6 @@ With its comprehensive feature set and advanced capabilities, Wave.io revolution
 
 ---
 
-## Table of Contents
-
-1. [Project's Title](#projects-title)
-2. [Project Description](#project-description)
-3. [Key Features](#key-features)
-4. [Problems Solved](#problems-solved)
-5. [How to Install and Run](#how-to-install-and-run)
-6. [How to Use the Project](#how-to-use-the-project)
-7. [Credits](#credits)
-8. [License](#license)
 
 ---
 
