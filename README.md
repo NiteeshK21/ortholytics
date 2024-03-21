@@ -81,13 +81,6 @@ python filename.py
 
 node filename.js
 
-
-
-
-
-
-
-
 ---
 
 ## How to Use the Project
@@ -98,7 +91,7 @@ Using Wave.io is straightforward. Simply upload your audio files to the platform
 
 ## Credits
 
-Wave.io is developed by [Your Name] and [Your Team]. Special thanks to [Collaborators] for their contributions to the project. Connect with us on GitHub and social media:
+Wave.io is developed by Niteesh Pandey , Shazin abbas , Divyanshu Singh out team Do puff code . Special thanks to [Collaborators] for their contributions to the project. Connect with us on GitHub and social media:
 
 - GitHub: [Your GitHub Profile]
 - Twitter: [Your Twitter Profile]
