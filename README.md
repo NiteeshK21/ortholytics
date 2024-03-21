@@ -77,9 +77,7 @@ If the code has additional dependencies not included in the repository, install 
 **Run the Code:**  
 Execute the code using the relevant command or script. For example, you can run a Python script with:
 
-python filename.py
-
-node filename.js
+python manage.py runserver
 
 ---
 
@@ -91,11 +89,7 @@ Using Wave.io is straightforward. Simply upload your audio files to the platform
 
 ## Credits
 
-Wave.io is developed by Niteesh Pandey , Shazin abbas , Divyanshu Singh out team Do puff code . Special thanks to [Collaborators] for their contributions to the project. Connect with us on GitHub and social media:
-
-- GitHub: [Your GitHub Profile]
-- Twitter: [Your Twitter Profile]
-- LinkedIn: [Your LinkedIn Profile]
+Wave.io is developed by Niteesh Pandey , Shazin abbas , Divyanshu Singh out team Do puff code . Special thanks to [Collaborators] for their contributions to the project.
 
 ---
 
