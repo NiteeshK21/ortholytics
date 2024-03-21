@@ -1,19 +1,34 @@
-## Description
 # Wave.io - Audio Analytics Platform
-
 ---
-
 ## Description
 
 Wave.io is an innovative and comprehensive audio analytics platform that empowers businesses to unlock valuable insights from their audio data. By leveraging state-of-the-art technologies, Wave.io streamlines the process of analyzing audio files, providing advanced features for diarization, automatic speech recognition (ASR), and keyword extraction across various categories.
 
 ### Key Features:
 
-- **Diarization:** Wave.io offers robust diarization capabilities, allowing users to segment audio recordings into distinct speaker segments. This feature is particularly useful for call center analytics, interview transcription, and meeting analysis.
+1. **Automatic Dashboard Creation:** 
+   - Wave.io offers automated dashboard creation for 55 different audio datasets, providing users with comprehensive visualizations and insights. Whether it's call center data, interview recordings, or conference proceedings, Wave.io's dashboard creation feature simplifies data analysis and enhances decision-making.
 
-- **Automatic Speech Recognition (ASR):** With Wave.io's ASR functionality, users can accurately transcribe audio content into text in multiple languages. This feature enables efficient content indexing, transcription services, and content analysis.
+2. **Diarization and ASR:**
+   - Wave.io's advanced diarization and automatic speech recognition (ASR) capabilities enable accurate segmentation and transcription of audio recordings. By separating speakers and transcribing speech, Wave.io facilitates efficient content analysis and extraction of valuable insights.
 
-- **Keyword Extraction:** Wave.io facilitates the extraction of key insights from audio data by identifying and categorizing keywords across different domains. Users can classify audio content into predefined categories such as positive feedback, negative feedback, constructive feedback, competitor performance, products, conversation topics, and issues.
+3. **Keyword Extraction:** 
+   - With Wave.io, users can effortlessly extract keywords from audio data, categorizing content into meaningful topics and themes. By identifying relevant keywords and phrases, Wave.io helps businesses uncover actionable insights and trends within their audio recordings.
+
+4. **Report Generation:**
+   - Wave.io simplifies report generation by automatically summarizing key points from audio conversations. Whether it's customer interactions, team meetings, or support calls, Wave.io generates concise reports that highlight important details and insights.
+
+5. **Customer Engagement Score:**
+   - Wave.io calculates customer engagement scores based on audio analysis, providing businesses with quantifiable metrics to measure customer interaction and satisfaction. By analyzing factors such as tone, sentiment, and duration, Wave.io helps businesses gauge customer engagement levels and optimize their strategies accordingly.
+
+6. **Interactive Visualization:**
+   - Wave.io offers interactive visualization tools that allow users to explore and analyze audio data in a dynamic and intuitive manner. From trend analysis to sentiment mapping, Wave.io's visualization capabilities empower users to gain deeper insights and make informed decisions.
+
+7. **Quality Assurance Reporting:**
+   - Wave.io provides quality assurance reporting functionality, enabling businesses to assess and monitor the quality of their audio interactions. By identifying areas for improvement and potential issues, Wave.io helps businesses enhance service delivery and customer satisfaction.
+
+With its comprehensive feature set and advanced capabilities, Wave.io revolutionizes audio analytics, empowering businesses to extract actionable insights and drive strategic decision-making.
+
 
 ### Problems Solved:
 
